@@ -267,7 +267,7 @@ class _vicationsState extends State<vications> {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-      pushNotificationsManager.initInfo(context);
+      pushNotificationsManager.initInfo(context,0,"");
 
     return Scaffold(
       appBar: AppBar(
@@ -472,6 +472,8 @@ class _vicationsState extends State<vications> {
                                     'reason':reasonController.text,
                                     'type':selectedType,
                                     'time':FieldValue.serverTimestamp(),
+                                    'token':token,
+                                    'clicked':false
                                   });
                                 }
                               },

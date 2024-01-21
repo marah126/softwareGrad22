@@ -354,28 +354,37 @@ class _adminHomePageState extends State<adminHomePage> {
         ),
       ),
       appBar: AppBar(
-        backgroundColor: primaryColor,
-        automaticallyImplyLeading: false,
-
-        actions: [
-         Builder(
-          builder: (BuildContext context) {
-           return IconButton(
-              icon: Icon(Icons.list),
-              onPressed: () {
-                Scaffold.of(context).openEndDrawer();
-              },
-            );
-          }
-         ),
-          IconButton(
-            icon: Icon(Icons.wechat),
-            onPressed: () {
-               Navigator.push(context, MaterialPageRoute(builder: (context){return chat();}));
-            },
-          ),
-         ],
-       ),
+  backgroundColor: primaryColor,
+  automaticallyImplyLeading: false,
+  actions: [
+    IconButton(
+      icon: Icon(Icons.notifications),
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return notificationScreen();
+        }));
+      },
+    ),
+    IconButton(
+      icon: Icon(Icons.wechat),
+      onPressed: () {
+        Navigator.push(context, MaterialPageRoute(builder: (context) {
+          return chat();
+        }));
+      },
+    ),
+    Builder(
+      builder: (BuildContext context) {
+        return IconButton(
+          icon: Icon(Icons.list),
+          onPressed: () {
+            Scaffold.of(context).openEndDrawer();
+          },
+        );
+      },
+    ),
+  ],
+),
        body: container,
       // Container(
       //   width: size.width,

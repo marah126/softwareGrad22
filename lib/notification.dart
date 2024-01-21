@@ -10,6 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:sanad_software_project/adminPages/calender.dart';
 import 'package:sanad_software_project/adminPages/notifScreen.dart';
+import 'package:sanad_software_project/specialestPages/empVications.dart';
 
 class pushNotificationsManager{
   static int no=0;
@@ -56,7 +57,7 @@ class pushNotificationsManager{
 
 
 
-  static void initInfo(BuildContext context){
+  static void initInfo(BuildContext context,int user,String id){
     var androidInitialize= const AndroidInitializationSettings('@mipmap/ic_launcher');
     //var iosInitilaize= const IOSI();
     InitializationSettings initializationSettings = InitializationSettings(android: androidInitialize);
@@ -64,9 +65,16 @@ class pushNotificationsManager{
       try{
         if(event.payload!=null && event.payload!.isNotEmpty){
           print("have payload");
-          Navigator.push( context, MaterialPageRoute(builder:( BuildContext context){
+          if(user ==0){
+            Navigator.push( context, MaterialPageRoute(builder:( BuildContext context){
             return notificationScreen();
           }));
+        }else if(user == 1){
+          Navigator.push( context, MaterialPageRoute(builder:( BuildContext context){
+            return vications(id: id,);
+          }));
+        }
+          
         }
         else{
           print("no payload");

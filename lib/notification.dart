@@ -9,6 +9,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:sanad_software_project/adminPages/calender.dart';
+import 'package:sanad_software_project/adminPages/notifScreen.dart';
 
 class pushNotificationsManager{
   static int no=0;
@@ -64,7 +65,7 @@ class pushNotificationsManager{
         if(event.payload!=null && event.payload!.isNotEmpty){
           print("have payload");
           Navigator.push( context, MaterialPageRoute(builder:( BuildContext context){
-            return calendar(text:event.payload.toString());
+            return notificationScreen();
           }));
         }
         else{

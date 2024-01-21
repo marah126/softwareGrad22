@@ -10,6 +10,7 @@ import 'package:sanad_software_project/adminPages/adminHome.dart';
 import 'package:sanad_software_project/adminPages/c.dart';
 import 'package:sanad_software_project/adminPages/chat.dart';
 import 'package:sanad_software_project/adminPages/dailyScheduale.dart';
+import 'package:sanad_software_project/adminPages/notifScreen.dart';
 import 'package:sanad_software_project/adminPages/showAllChildren.dart';
 import 'package:sanad_software_project/adminPages/showAllEmployee.dart';
 import 'package:sanad_software_project/adminPages/viewemployeeToChat.dart';
@@ -318,7 +319,7 @@ class _adminHomePageState extends State<adminHomePage> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        container=dailySchedual();
+                        container=notificationScreen();
                       });
                     },
                     style: TextButton.styleFrom(

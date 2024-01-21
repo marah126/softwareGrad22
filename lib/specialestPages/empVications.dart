@@ -11,7 +11,6 @@ import 'package:http/http.dart' as http;
 
 class vications extends StatefulWidget {
   final String id;
-
   const vications({super.key, required this.id});
   @override
   State<StatefulWidget> createState() {
@@ -20,6 +19,8 @@ class vications extends StatefulWidget {
 }
 
 class _vicationsState extends State<vications> {
+  final firestore=FirebaseFirestore.instance;
+
   late String id;
   static List<String> type = [
     'مرضية',
@@ -52,6 +53,23 @@ class _vicationsState extends State<vications> {
   DateTime selectedDate = DateTime.now();
   String selectedYear=DateTime.now().year.toString();
   late List<Map<String, dynamic>> data = [];
+  late String name;
+
+
+  Future<void> getSPname()async{
+  final spName = await http.get(Uri.parse("$ip/sanad/getsppnename?id=$id"));
+  if(spName.statusCode==200){
+    print("body "+spName.body.toString());
+    final spNameBody=jsonDecode(spName.body);
+      name=spNameBody['Fname']+" "+spNameBody['Lname'];
+    
+    print("name"+name);
+  }
+  else{
+    print("error"+spName.body);
+  }
+}
+
   
 
   Future<void> postNewVecation() async {
@@ -188,6 +206,7 @@ class _vicationsState extends State<vications> {
     id = widget.id;
     print("vecations id"+id);
     print("yeaarrrr"+selectedYear);
+    getSPname();
     getVecations();
     getStartYear();
     getDetails();
@@ -445,6 +464,15 @@ class _vicationsState extends State<vications> {
                                   print(token);
                                   print(id);
                                   pushNotificationsManager.sendPushMessage(token, "vecation", "vecation Body");
+                                  firestore.collection('notifInfo').add({
+                                    'name':name,
+                                    'id':id,
+                                    'startDate':sd,
+                                    'endDate':ed,
+                                    'reason':reasonController.text,
+                                    'type':selectedType,
+                                    'time':FieldValue.serverTimestamp(),
+                                  });
                                 }
                               },
                               style: ElevatedButton.styleFrom(

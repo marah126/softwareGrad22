@@ -10,6 +10,7 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:http/http.dart' as http;
 import 'package:sanad_software_project/adminPages/calender.dart';
 import 'package:sanad_software_project/adminPages/notifScreen.dart';
+import 'package:sanad_software_project/parents.dart/homePageParent.dart';
 import 'package:sanad_software_project/specialestPages/empVications.dart';
 
 class pushNotificationsManager{
@@ -37,21 +38,22 @@ class pushNotificationsManager{
   }
 
 
-  static void getToken(String id)async{
+  static void getToken(String id,String type)async{
     String? myToken ="";
     await FirebaseMessaging.instance.getToken().then(
       (token){
         myToken=token;
         print("My token is $myToken");
     });
-    saveToken(myToken!, id);
+    saveToken(myToken!, id,type);
   }
 
 
-  static saveToken(String token,String id) async{
+  static saveToken(String token,String id,String type) async{
     await FirebaseFirestore.instance.collection("notifications").doc('$id').set({
       'token':token,
-      'id':id
+      'id':id,
+      'type':type
     });
   }
 
@@ -64,7 +66,7 @@ class pushNotificationsManager{
     flutterLocalNotificationsPlugin.initialize(initializationSettings,onDidReceiveNotificationResponse:(NotificationResponse event)async{
       try{
         if(event.payload!=null && event.payload!.isNotEmpty){
-          print("have payload");
+          print("have payload");  
           if(user ==0){
             Navigator.push( context, MaterialPageRoute(builder:( BuildContext context){
             return notificationScreen();
@@ -72,6 +74,10 @@ class pushNotificationsManager{
         }else if(user == 1){
           Navigator.push( context, MaterialPageRoute(builder:( BuildContext context){
             return vications(id: id,);
+          }));
+        }else if(user==2){
+          Navigator.push( context, MaterialPageRoute(builder:( BuildContext context){
+            return childSchdule(id: id,);
           }));
         }
           

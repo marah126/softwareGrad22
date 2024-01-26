@@ -24,11 +24,11 @@ class newSpecialest extends StatefulWidget {
 
 class _newSpecialestState extends State<newSpecialest> {
   static const List<String> sessions = [
-    'ســلــوكــي',
-    'وظــيــفــي',
-    'تــربـيـة خـاصـة',
-    'عــلاج طــبـيـعي',
-    'الـلغـة و نــطــق',
+    'سلوكي',
+    'وظيفي',
+    'تربية خاصة',
+    'علاج طبيعي',
+    'اللغة و النطق ',
   ];
   String selectedValue3 = sessions.first;
   String ss="";

@@ -149,13 +149,13 @@ class _DetailsPageState extends State<DetailsPage> {
   }
 
   void _showDialog(BuildContext context, String s) {
-    List<Map<String, String>> tableData = [
-      {"date": "1", "reason": "سـمع ونـطق"},
-      {"date": "2", "reason": "علاج سلوكي"},
-      {"date": "3", "reason": "علاج وظيفي"},
-      {"date": "4", "reason": "رياضة"},
-      // Add more rows as needed
-    ];
+    // List<Map<String, String>> tableData = [
+    //   {"date": "1", "reason": "سـمع ونـطق"},
+    //   {"date": "2", "reason": "علاج سلوكي"},
+    //   {"date": "3", "reason": "علاج وظيفي"},
+    //   {"date": "4", "reason": "رياضة"},
+    //   // Add more rows as needed
+    // ];
     bool _selectAll = false;
     List<bool> _selectedRows = List.filled(sessions!.length, false);
     void _deleteSelectedRows() {

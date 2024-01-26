@@ -56,29 +56,7 @@ class _adminPostsState extends State<adminPosts> {
           '- من المسببات في تأخر اللغة عند الأطفال 🗣️🤔• مشاهدة الأجهزة الإلكترونية لساعات طويلة بمفرده • عدم محاورة الطفل خاصة في الأشهر الأولى من ولادته • عدم دمج الطفل مع أقرانه • إدخال أكثر من لغة للطفل في عمر صغير و بطريقة عشوائية مما يجعل الطفل مشتت بين اللغات وغير قادر على بناء منظومة لغوية كافية و قواعد سليمة . ✨أخصائية النطق والسمع : تيما جرارعة ✨المسببات في تأخر اللغة عند الأطفال 🗣️🤔• مشاهدة الأجهزة الإلكترونية لساعات طويلة بمفرده • عدم محاورة الطفل خاصة في الأشهر الأولى من ولادته • عدم دمج الطفل مع أقرانه • إدخال أكثر من لغة للطفل في عمر صغير و بطريقة عشوائية مما يجعل الطفل مشتت بين اللغات وغير قادر على بناء منظومة لغوية كافية و قواعد سليمة . ✨أخصائية النطق والسمع : تيما جرارعة ✨المسببات في تأخر اللغة عند الأطفال 🗣️🤔• مشاهدة الأجهزة الإلكترونية لساعات طويلة بمفرده • عدم محاورة الطفل خاصة في الأشهر الأولى من ولادته • عدم دمج الطفل مع أقرانه • إدخال أكثر من لغة للطفل في عمر صغير و بطريقة عشوائية مما يجعل الطفل مشتت بين اللغات وغير قادر على بناء منظومة لغوية كافية و قواعد سليمة . ✨أخصائية النطق والسمع : تيما جرارعة ✨',
       'image': 'assets/images/posts.jpg'
     },
-    {
-      'title': "توعية",
-      'date': '16/12/2023',
-      'time': '01:21 AM',
-      'data':
-          'ما فائدة معرفة متى يتعلم الأطفال التركيز؟🤔🙇‍♂️ أخذ القدرات لكل عمر في الاعتبار أمرًا ضروريًا فهذه المعرفة الأساسية ستسمح بتنظيم المهام التي تُعطى لأطفالكم ، وتعديل الفترات الزمنية ، وتخطيط فترات راحة كافية ، وقبل كل شيء لتحديد ما إذا كانت هناك مشكلة بالفعل.*قد تختلف المدة من طفل إلى آخر.عمر سنتين: 4-6 دقائق3 سنوات: 6-8 دقائق4 سنوات: 8-12 دقيقة5-6 سنوات: 12-18 دقيقة7-8 سنوات: 16-24 دقيقة9-10 سنوات: 20-30 دقيقة11-12 سنة: 25-35 دقيقة13-15 سنة: 30-40 دقيقة✨أخصائية العلاج الوظيفي : ايه جعايصة ✨',
-      'image': 'assets/images/posts.jpg'
-    },
-    {
-      'title': "توعية",
-      'date': '16/12/2023',
-      'time': '01:21 AM',
-      'data':
-          '-----------------------------------------------------------------',
-      'image': 'assets/images/posts.jpg'
-    },
-    {
-      'title': "توعية",
-      'date': '16/12/2023',
-      'time': '01:21 AM',
-      'data': '-------------------------------------------------------------',
-      'image': 'assets/images/posts.jpg'
-    },
+    
   ];
   
   List <String> images=[];
@@ -86,9 +64,19 @@ class _adminPostsState extends State<adminPosts> {
   Future<void>newPost()async{
      if (_image == null) {
       print('No image selected');
+      final url = Uri.parse(ip+'/sanad/newPost'); // Replace with your server's IP
+      var request = http.post(url,body: {
+        'title':titleController.text.trim(),
+        'text':textController.text.trim(),
+          'date':formattedDate,
+          'time':formattedTime,
+      });
+      
+      
+
       return;
     }
-
+    
     final url = Uri.parse(ip+'/sanad/newPost'); // Replace with your server's IP
     var request = http.MultipartRequest('POST', url);
     request.fields['title'] = titleController.text.trim();
@@ -96,7 +84,7 @@ class _adminPostsState extends State<adminPosts> {
     request.fields['date']=formattedDate;
     request.fields['time']=formattedTime;
     request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
-
+    
     try {
       var response = await request.send();
       if (response.statusCode == 200) {
@@ -119,30 +107,47 @@ class _adminPostsState extends State<adminPosts> {
     final allPosts=await http.get(Uri.parse("$ip/sanad/getPosts"));
     if(allPosts.statusCode==200){
       final List<dynamic> data = jsonDecode(allPosts.body);
+      int length=data.length -1;
       for(int i=0 ; i<data.length ; i++){
         Map<String, String> newPost = {
-        'title': data[i]['title'],
-        'date': data[i]['date'],
-        'time': data[i]['time'],
-        'data': data[i]['text'],
+        'title': data[length-i]['title'],
+        'date': data[length-i]['date'],
+        'time': data[length-i]['time'],
+        'data': data[length-i]['text'],
         'image': 'assets/images/posts.jpg',
       };
       dynamicposts.add(newPost);
-      String s="$ip/sanad/getImagePost?filename=${data[i]['imageName']}";
-      images.add(s);
+      String s=data[length-i]['imageName'];
+      if(s.trim()==""){
+        print("empty index $i");
+        images.add("");
+      }
+      else{
+        s="$ip/sanad/getImagePost?filename=${data[length-i]['imageName']}";
+        images.add(s);
+      }
+      
+      
       }
     }
   }
 
 
-  Future<void> sendToken() async {
+  Future<void> sendToken(String title) async {
     QuerySnapshot<Map<String, dynamic>> snapshot = await firestore.collection("notifications").get();
-  
+    print("gfshgtr");
     final messages = snapshot.docs; 
     print(messages.length);
 
     for (var message in messages) {
       Map<String, dynamic> data = message.data()!;
+      if(data['type']=='child'){
+        String id=data['id'];
+        String token=data['token'];
+        pushNotificationsManager.initInfo(context, 2, id);
+        pushNotificationsManager.sendPushMessage(token, " لديك منشور جديد بعنوان $title", "منشور جديد");
+      }
+
     }
 }
 
@@ -284,7 +289,8 @@ class _adminPostsState extends State<adminPosts> {
                               ],
                             ),
                             Center(
-                              child: Image.network(
+                              child: images[i]==""?Text(""):
+                              Image.network(
                                 images[i] ?? '',
                                 width: 350,
                                 height: 300,
@@ -323,6 +329,8 @@ class _adminPostsState extends State<adminPosts> {
       floatingActionButtonLocation: FloatingActionButtonLocation.startFloat,
     );
   }
+
+  
 
   void _showAddPostDialog(BuildContext context) {
     formattedDate = DateFormat('dd/MM/yyyy').format(DateTime.now());
@@ -478,6 +486,7 @@ class _adminPostsState extends State<adminPosts> {
                               height: 5,
                             ),
                             TextField(
+                              controller: titleController,
                               decoration: InputDecoration(
                                 labelText: ' ',
                                 border: OutlineInputBorder(
@@ -514,6 +523,7 @@ class _adminPostsState extends State<adminPosts> {
                                 height: 5,
                               ),
                               TextField(
+                                controller: textController,
                                 maxLines: 4,
                                 decoration: InputDecoration(
                                   labelText: ' ',
@@ -541,6 +551,8 @@ class _adminPostsState extends State<adminPosts> {
                           children: [
                             TextButton(
                               onPressed: () {
+                                titleController.text="";
+                                textController.text="";
                                 Navigator.pop(context); // Close the dialog
                               },
                               child: Text(
@@ -555,8 +567,12 @@ class _adminPostsState extends State<adminPosts> {
                             ),
                             Spacer(),
                             TextButton(
-                              onPressed: () {
+                              onPressed: () async{
                                 newPost();
+                                await sendToken(titleController.text);
+                                titleController.text="";
+                                textController.text="";
+                                Navigator.pop(context);
                               },
                               child: Text(
                                 'تــم',
@@ -565,7 +581,7 @@ class _adminPostsState extends State<adminPosts> {
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xff6f35a5)),
-                              ),
+                              ),  
                             ),
                           ],
                         )

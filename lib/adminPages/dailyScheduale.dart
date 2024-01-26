@@ -26,11 +26,11 @@ class dailySchedualState extends State<dailySchedual> {
   List<String> sp = [];
   List<String> sessions = [];
    Map<String, Color> colorMap = {
-    'الـلغـة و نــطــق':Color.fromARGB(255, 202, 172, 235),
-    'ســلــوكــي': Color(0xffb1a1b3),
-    'وظــيــفــي': Color(0xfffff9e6),
-    'تــربـيـة خـاصـة': Color(0xffe6f6ff),
-    'عــلاج طــبـيـعي': Color(0xffEBFFE5)
+    'اللغة والنطق':Color.fromARGB(255, 202, 172, 235),
+    'سلوكي': Color(0xffb1a1b3),
+    'وظيفي': Color(0xfffff9e6),
+    'تربية خاصة': Color(0xffe6f6ff),
+    'علاج طبيعي': Color(0xffEBFFE5)
   };
   @override
   void initState() {

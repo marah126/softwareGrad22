@@ -22,7 +22,7 @@ class spHomePage extends StatefulWidget{
 class spHomePageState extends State<spHomePage>{
 
   late String id;
-  String name='فطوم دريني';
+   String name="خديجة دريني";
 
   List<dynamic> data=[] ;
   List<DateTime> date=[];
@@ -38,7 +38,7 @@ class spHomePageState extends State<spHomePage>{
     super.initState();
     setState(()  {
       id = widget.id;
-     // name=widget.name;
+      //name=widget.name;
       now =now.subtract(Duration(minutes: 30));
       getSPsessionsToday();
       print("nnnn"+now.toString());
@@ -79,8 +79,6 @@ class spHomePageState extends State<spHomePage>{
       print("error");
     }
   }
-
-
 
   @override
   Widget build(BuildContext context) {

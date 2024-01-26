@@ -118,11 +118,11 @@ class adminHomeState extends State<adminHome>{
   ];
   List<CustomEvent> events = [];
   static const List<String> sessions = [
-    'الـلغـة و نــطــق',
-    'ســلــوكــي',
-    'وظــيــفــي',
-    'تــربـيـة خـاصـة',
-    'عــلاج طــبـيـعي',
+    'سلوكي',
+    'وظيفي',
+    'تربية خاصة',
+    'علاج طبيعي',
+    'اللغة و النطق ',
   ];
   String selectedValue = children.first;
   String selectedValue2 = specialests.first;

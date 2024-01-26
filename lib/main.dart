@@ -29,7 +29,7 @@ void main() async{
   );//:
   await Firebase.initializeApp();
   await FirebaseMessaging.instance.getInitialMessage();
-  pushNotificationsManager.getToken("admin");
+  pushNotificationsManager.getToken("admin","admin");
   FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
   runApp( MyApp());
 }

@@ -4,19 +4,13 @@ import 'dart:convert';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:sanad_software_project/adminPages/addNewChild.dart';
-import 'package:sanad_software_project/adminPages/addNewSpecialest.dart';
-import 'package:sanad_software_project/adminPages/adminHome.dart';
-import 'package:sanad_software_project/adminPages/c.dart';
-import 'package:sanad_software_project/adminPages/chat.dart';
-import 'package:sanad_software_project/adminPages/showAllChildren.dart';
-import 'package:sanad_software_project/adminPages/showAllEmployee.dart';
+import 'package:sanad_software_project/specialestPages/addNewGoals.dart';
 import 'package:sanad_software_project/specialestPages/empPersonalInformation.dart';
 import 'package:sanad_software_project/specialestPages/empVications.dart';
 import 'package:sanad_software_project/specialestPages/homePage.dart';
+import 'package:sanad_software_project/specialestPages/objectives.dart';
 import 'package:sanad_software_project/specialestPages/viewChildren.dart';
 import 'package:sanad_software_project/theme.dart';
-import 'package:syncfusion_flutter_calendar/calendar.dart';
 import 'package:http/http.dart' as http;
 
 
@@ -56,7 +50,7 @@ class _spHomeDrawerState extends State<spHomeDrawer> {
   }
 
   Color hoveredColor = primaryLightColor;
-   late Widget container=spHomePage(id: id,name: "فطوم دريني",);
+   late Widget container=spHomePage(id: id,name: "خديجة دريني",);
 
     String imageUrl = '';
 
@@ -285,7 +279,79 @@ Future<void> getSPname()async{
                   ),
                 ),
                 SizedBox(height: 5,),
-                
+                Container(
+                width: size.width,
+                height: size.width * 0.2,
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        container=newGoals(spId: id,childId: "",);
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: primaryColor,
+                        padding: EdgeInsets.all(10),
+                        backgroundColor: hoveredColor,
+                        elevation: 3,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "الأهـــداف",
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'myFont',
+                            fontSize: 20,
+                          ),
+                        ),SizedBox(
+                            width: 8),
+                        Icon(
+                          Icons.person, // Replace with the desired icon
+                          color: primaryColor, // Set the color of the icon
+                        ),
+                        SizedBox(width: 30,),
+                      ],
+                    ),
+                  ),
+                ),
+                SizedBox(height: 5,),
+                Container(
+                width: size.width,
+                height: size.width * 0.2,
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        container=goals(spId: id,childId: "",);
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: primaryColor,
+                        padding: EdgeInsets.all(10),
+                        backgroundColor: hoveredColor,
+                        elevation: 3,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "الإجـــازات",
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'myFont',
+                            fontSize: 20,
+                          ),
+                        ),SizedBox(
+                            width: 8),
+                        Icon(
+                          Icons.person, // Replace with the desired icon
+                          color: primaryColor, // Set the color of the icon
+                        ),
+                        SizedBox(width: 30,),
+                      ],
+                    ),
+                  ),
+                ),
             ]),
           ),
         ),

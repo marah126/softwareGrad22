@@ -32,7 +32,7 @@ class _signupState extends State<signup> {
   bool passStrength=false;
   bool _obscureText = true;
   bool _obscureText2 = true;
-
+  late String type;
 
   String result = "";
 
@@ -58,6 +58,12 @@ class _signupState extends State<signup> {
 /////////////////////////////////////////////////////////////////////////////////////////////
   void handleRadioValueChanged(int value) {
     setState(() {
+      if(value==1){
+        type="sp";
+      }
+      if(value==2){
+        type="child";
+      }
       selectedValue = value;
       print(selectedValue);
     });
@@ -97,7 +103,7 @@ showDialog<void>(
       if(response.statusCode==200){
         var mass = jsonDecode(response.body.toString());
         signUpWithEmailAndPassword();
-        pushNotificationsManager.getToken(idController.text.trim());
+        pushNotificationsManager.getToken(idController.text.trim(),type);
         print("mass");
         showDialog(
         context: context,

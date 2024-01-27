@@ -1,20 +1,21 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
 import 'dart:convert';
-import 'dart:math';
-
+import 'package:http/http.dart' as http;
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
-import 'package:sanad_software_project/specialestPages/objectives.dart';
 import 'package:sanad_software_project/theme.dart';
-import 'package:http/http.dart' as http;
 
-class evalobjec extends StatefulWidget {
+class doneGoals extends StatefulWidget {
+  final String childId;
+  final String spId;
+
+  const doneGoals({super.key, required this.childId, required this.spId});
   @override
-  _evalobjecState createState() => _evalobjecState();
+  _doneGoalsState createState() => _doneGoalsState();
 }
 
-class _evalobjecState extends State<evalobjec> {
+class _doneGoalsState extends State<doneGoals> {
   String childID = '123456789';
   String spID = '987654321';
   bool isChecked = false;
@@ -28,9 +29,13 @@ class _evalobjecState extends State<evalobjec> {
 
   List<String> goalsList = [];
   List<String> percentList = [];
-  
-
   List<bool> isCheckedList = [];
+  List<Color> colors = [
+    // primaryLightColor,
+    Color.fromARGB(212, 253, 253, 226),
+    Color.fromARGB(255, 217, 232, 243),
+    Color.fromARGB(255, 221, 237, 218)
+  ];
 
   Future<void> getGoals(String subType) async {
     setState(() {
@@ -41,7 +46,7 @@ class _evalobjecState extends State<evalobjec> {
 
     try {
       final goalsResponse = await http.get(Uri.parse(
-          "$ip/sanad/getObjects?childID=$childID&spID=$spID&type=وظيفي&subType=$subType"));
+          "$ip/sanad/getDoneObj?childID=$childID&spID=$spID&type=وظيفي&subType=$subType"));
       if (goalsResponse.statusCode == 200) {
         List<dynamic> data = jsonDecode(goalsResponse.body);
         for (int i = 0; i < data.length; i++) {
@@ -59,40 +64,13 @@ class _evalobjecState extends State<evalobjec> {
     }
   }
 
-  Future<void> update() async {
-    try {
-      for (int i = 0; i < goalsList.length; i++) {
-        if (isCheckedList[i] == true) {
-          print("index $i");
-          print(goalsList[i]);
-          print(percentList[i]);
-          final updateDone =
-              await http.post(Uri.parse("$ip/sanad/updateObjStatus"), body: {
-            'childID': childID,
-            'spID': spID,
-            'type': "وظيفي",
-            'subType': itemm,
-            'object': goalsList[i].trim(),
-            'percent': percentList[i].trim(),
-          });
-          if (updateDone.statusCode == 200) {
-            print("updated");
-          } else {
-            print("noo update");
-          }
-        }
-      }
-    } catch (error) {
-      print("error $error");
-    }
-  }
-
   @override
   void initState() {
+    // TODO: implement initState
     super.initState();
-    getGoals("التركيز والانتباه ");
-    print(goalsList.length);
+    getGoals(myItems.first);
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -101,8 +79,9 @@ class _evalobjecState extends State<evalobjec> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: primaryColor,
+        centerTitle: true,
         title: Text(
-          " الأهـداف",
+          " الأهـداف الـحـالـيـة",
           style: TextStyle(
               color: Colors.white,
               fontFamily: 'myFont',
@@ -221,7 +200,7 @@ class _evalobjecState extends State<evalobjec> {
                     height: 20,
                   ),
                   // for(int j=0;j<3;j++)
-                  Container(
+                  Card(
                     margin: EdgeInsets.only(bottom: 20),
                     color: Color(0xffFAF5FF),
                     child: Container(
@@ -232,15 +211,51 @@ class _evalobjecState extends State<evalobjec> {
                           Text(
                             itemm,
                             style: TextStyle(
-                                color: primaryColor,
+                                color: secondaryColor,
                                 fontFamily: 'myfont',
-                                fontSize: 20,
+                                fontSize: 22,
                                 fontWeight: FontWeight.bold),
                             textAlign: TextAlign.end,
                           ),
                           SizedBox(
-                            height: 10,
+                            height: 20,
                           ),
+                          goalsList.isEmpty?SizedBox():
+                          Container(
+                                  margin: EdgeInsets.only(bottom: 20),
+                                  color: Color(0xffFAF5FF),
+                                  child: 
+                                      Row(
+                                        children: <Widget>[
+                                          SizedBox(
+                                            width: 6,
+                                          ),
+                                          Text(
+                                            "الـنـسـبـة ",
+                                            style: TextStyle(
+                                              fontFamily: 'myfont',
+                                              color: secondaryColor,
+                                              fontSize: 20,
+                                            ),
+                                          ),
+                                          Spacer(),
+                                          Container(
+                                            child: Text(
+                                              "الـهدف الـمراد تـحـقـيـقـه",
+                                              style: TextStyle(
+                                                color: secondaryColor,
+                                                fontFamily: 'myfont',
+                                                fontSize: 20,
+                                              ),
+                                              textAlign: TextAlign.right,
+                                            ),
+                                          ),
+                                          SizedBox(
+                                            width: 5,
+                                          ),
+                                        ],
+                                      ),
+                                ),
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
@@ -253,10 +268,9 @@ class _evalobjecState extends State<evalobjec> {
                                           fontWeight: FontWeight.bold))
                                   : SizedBox(),
                               for (int i = 0; i < goalsList.length; i++)
-                                Card(
+                                Container(
                                   margin: EdgeInsets.only(bottom: 20),
-                                  color: primaryLightColor,
-                                  elevation: 2,
+                                  color: colors[i%3],
                                   child: Column(
                                     children: <Widget>[
                                       Row(
@@ -292,41 +306,13 @@ class _evalobjecState extends State<evalobjec> {
                                           ),
                                           SizedBox(
                                             width: 5,
-                                          )
-                                        ],
-                                      ),
-                                      Row(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.center,
-                                        children: <Widget>[
-                                          Spacer(),
-                                          Checkbox(
-                                            value: isCheckedList[i],
-                                            onChanged: (value) {
-                                              setState(() {
-                                                isCheckedList[i] = value!;
-                                              });
-                                            },
-                                            activeColor: primaryColor,
-                                            checkColor: Colors.white,
                                           ),
-                                          Spacer(),
-                                          Text(
-                                            'تـم تـحـقـيـق الـهـدف',
-                                            style: TextStyle(
-                                              color: Color.fromARGB(
-                                                  255, 40, 34, 55),
-                                              fontFamily: 'myfont',
-                                              fontSize: 17,
-                                            ),
-                                          ),
-                                          Spacer(),
-                                        ],
+                                      ],
                                       ),
                                       SizedBox(
-                                        height: 8,
+                                        height: 10,
                                       ),
-                                      // Divider(thickness: 0.8,color: Colors.grey,)
+                                      //  Divider(thickness: 0.8,color:secondaryColor,)
                                     ],
                                   ),
                                 ),
@@ -338,25 +324,7 @@ class _evalobjecState extends State<evalobjec> {
                   ),
                 ],
               ),
-              ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: primaryColor,
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(20.0),
-                  ),
-                ),
-                child: Text(
-                  "حـــفـــظ",
-                  style: TextStyle(
-                      fontFamily: 'myFont',
-                      fontWeight: FontWeight.bold,
-                      fontSize: 16),
-                ),
-                onPressed: () {
-                  update();
-                  getGoals(itemm);
-                },
-              ),
+              
               SizedBox(
                 height: 10,
               ),

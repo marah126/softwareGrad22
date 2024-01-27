@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:sanad_software_project/components/rounded_button.dart';
 import 'package:sanad_software_project/specialestPages/addNewGoals.dart';
+import 'package:sanad_software_project/specialestPages/doneGoals.dart';
 import 'package:sanad_software_project/specialestPages/evaluatingGoals.dart';
 import 'package:sanad_software_project/specialestPages/objectivesSp.dart';
 import 'package:sanad_software_project/theme.dart';
@@ -66,7 +67,7 @@ class _goalsState extends State<goals> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => objectives(spId: "",childId: "",),
+                          builder: (context) => doneGoals(spId: "",childId: "",),
                         ),
                       );
                     },

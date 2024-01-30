@@ -278,15 +278,15 @@ class _LoginState extends State<Login> {
                                 color: primaryColor)),
                       ],
                     ),
-                    ElevatedButton(
-                      onPressed:() {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){return spHomeDrawer(id:"5");}));}, 
-                    child: Text("sp")),
-                  ElevatedButton(
-                      onPressed:() {
-                      Navigator.push(context, MaterialPageRoute(builder: (context){return parentHomeDrawer(id: "1234567890",);}));}, 
-                    child: Text("child")),
-                   ],
+                  //   ElevatedButton(
+                  //     onPressed:() {
+                  //     Navigator.push(context, MaterialPageRoute(builder: (context){return spHomeDrawer(id:"5");}));}, 
+                  //   child: Text("sp")),
+                  // ElevatedButton(
+                  //     onPressed:() {
+                  //     Navigator.push(context, MaterialPageRoute(builder: (context){return parentHomeDrawer(id: "1234567890",);}));}, 
+                  //   child: Text("child")),
+                    ],
                    
                 )),
               )

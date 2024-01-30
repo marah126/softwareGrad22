@@ -5,15 +5,15 @@ import 'package:flutter/material.dart';
 import 'package:sanad_software_project/theme.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 
-class ChatScreen extends StatefulWidget {
+class ChatScreen2 extends StatefulWidget {
   final String receiverID;
   final String receiverName;
-  const ChatScreen({super.key, required this.receiverID, required this.receiverName});
+  const ChatScreen2({super.key, required this.receiverID, required this.receiverName});
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
 
-class _ChatScreenState extends State<ChatScreen> {
+class _ChatScreenState extends State<ChatScreen2> {
   late String receiverID;
   late String receiverName;
 
@@ -79,11 +79,9 @@ class _ChatScreenState extends State<ChatScreen> {
         backgroundColor: primaryColor,
         title: Row(
           children: [
-            SizedBox(width: 10),
             Text('محــادثة $receiverName',style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 18),),
             SizedBox(width: 10),
             Icon(Icons.chat_bubble,color: primaryLightColor,),
-
           ],
         ),
         actions: [
@@ -115,13 +113,13 @@ class _ChatScreenState extends State<ChatScreen> {
               final messages=snapshot.data!.docs;
               print(messages.length);
               for(var message in messages){
-                if((message.get('sender')=='admin' && message.get('receiver')==receiverID) || (message.get('sender')==receiverID && message.get('receiver')=='admin')) {
+                if((message.get('sender')=='987654321' && message.get('receiver')==receiverID) || (message.get('sender')==receiverID && message.get('receiver')=='987654321')) {
                   print("tteexxtt"+message.get('text'));
                   final mText=message.get('text');
                   final sender=message.get('sender');
                   final receiver=message.get('receiver');
                   final current ='admin';
-                  final widget=messageContainer(sender: receiverName,text: mText,isME: sender=="admin",); //currentUser==sender
+                  final widget=messageContainer(sender: receiverName,text: mText,isME: sender=="987654321",); //currentUser==sender
                   messageWidget.add(widget);
                 }
               }
@@ -172,7 +170,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     onPressed: () {
                       firestore.collection('messages').add({
                         'text':messageText.text,
-                        'sender':'admin',
+                        'sender':'987654321',
                         'receiver':receiverID,
                         'time':FieldValue.serverTimestamp(),
                       });

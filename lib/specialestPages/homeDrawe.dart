@@ -5,10 +5,12 @@ import 'dart:convert';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:sanad_software_project/specialestPages/addNewGoals.dart';
+import 'package:sanad_software_project/specialestPages/completeChildProfile.dart';
 import 'package:sanad_software_project/specialestPages/empPersonalInformation.dart';
 import 'package:sanad_software_project/specialestPages/empVications.dart';
 import 'package:sanad_software_project/specialestPages/homePage.dart';
 import 'package:sanad_software_project/specialestPages/objectives.dart';
+import 'package:sanad_software_project/specialestPages/toChat.dart';
 import 'package:sanad_software_project/specialestPages/viewChildren.dart';
 import 'package:sanad_software_project/theme.dart';
 import 'package:http/http.dart' as http;
@@ -25,8 +27,8 @@ class spHomeDrawer extends StatefulWidget{
 }
 
 class _spHomeDrawerState extends State<spHomeDrawer> {
-   String id="";
-   String name="";
+   String id="987654321";
+   String name="سارة حنو";
   final auth=FirebaseAuth.instance;
   void getUser(){
     try{
@@ -137,7 +139,7 @@ Future<void> getSPname()async{
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        container=spHomePage(id: "",name: "",);
+                        container=spHomePage(id: id,name: name,);
                       });
                     },
                     style: TextButton.styleFrom(
@@ -285,7 +287,7 @@ Future<void> getSPname()async{
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        container=newGoals(spId: id,childId: "",);
+                        container=edit();
                       });
                     },
                     style: TextButton.styleFrom(
@@ -298,7 +300,7 @@ Future<void> getSPname()async{
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          "الأهـــداف",
+                          "اكمال الصفحة الشخصية",
                           style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'myFont',
@@ -315,43 +317,43 @@ Future<void> getSPname()async{
                     ),
                   ),
                 ),
-                SizedBox(height: 5,),
-                Container(
-                width: size.width,
-                height: size.width * 0.2,
-                  child: TextButton(
-                    onPressed: () {
-                      setState(() {
-                        container=goals(spId: id,childId: "",);
-                      });
-                    },
-                    style: TextButton.styleFrom(
-                      foregroundColor: primaryColor,
-                        padding: EdgeInsets.all(10),
-                        backgroundColor: hoveredColor,
-                        elevation: 3,
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        Text(
-                          "الإجـــازات",
-                          style: TextStyle(
-                            color: primaryColor,
-                            fontFamily: 'myFont',
-                            fontSize: 20,
-                          ),
-                        ),SizedBox(
-                            width: 8),
-                        Icon(
-                          Icons.person, // Replace with the desired icon
-                          color: primaryColor, // Set the color of the icon
-                        ),
-                        SizedBox(width: 30,),
-                      ],
-                    ),
-                  ),
-                ),
+                // SizedBox(height: 5,),
+                // Container(
+                // width: size.width,
+                // height: size.width * 0.2,
+                //   child: TextButton(
+                //     onPressed: () {
+                //       setState(() {
+                //         container=goals(spId: id,childId: "",);
+                //       });
+                //     },
+                //     style: TextButton.styleFrom(
+                //       foregroundColor: primaryColor,
+                //         padding: EdgeInsets.all(10),
+                //         backgroundColor: hoveredColor,
+                //         elevation: 3,
+                //     ),
+                //     child: Row(
+                //       mainAxisAlignment: MainAxisAlignment.end,
+                //       children: [
+                //         Text(
+                //           "الإجـــازات",
+                //           style: TextStyle(
+                //             color: primaryColor,
+                //             fontFamily: 'myFont',
+                //             fontSize: 20,
+                //           ),
+                //         ),SizedBox(
+                //             width: 8),
+                //         Icon(
+                //           Icons.person, // Replace with the desired icon
+                //           color: primaryColor, // Set the color of the icon
+                //         ),
+                //         SizedBox(width: 30,),
+                //       ],
+                //     ),
+                //   ),
+                // ),
             ]),
           ),
         ),
@@ -373,7 +375,7 @@ Future<void> getSPname()async{
           IconButton(
             icon: Icon(Icons.message),
             onPressed: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context){return ChatScreen();}));
+               Navigator.push(context, MaterialPageRoute(builder: (context){return chat2();}));
             },
           ),
          ],

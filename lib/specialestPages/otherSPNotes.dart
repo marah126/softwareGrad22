@@ -25,6 +25,22 @@ class otherSpecialestNotesState extends State<otherSpecialestNotes>{
   late String spName;
   late String sesison;
 
+  List<String> notes=[
+    'يعاني الطفل من تشتت في التركيز يجب العمل عليه في جميع الجلسات',
+    'هناك تطور طفيف في تركيز الطفل',
+    'اقوم حاليا بتطوير قدرة الطفل في التعبير عن ما يريد لفظيا ، ارجوكم ان تجعلو الطفل يعبر باللفظ لا بالإشارة خلال جلساتكم',
+    'لاحظت تطور جيد في تركيز الطفل اثناء الجلسة واستجابته للمعطيات',
+    'لقد بدأت العمل على النطق السليم للكلمات ومخارج الحروف الصحيحة ارجو اعطائي ملاحظاتكم'
+  ];
+
+  List <String>dd=[
+    '28/12/2023',
+    '4/1/2024',
+    '8/1/2024',
+    '11/1/2024',
+    '18/1/2024'
+  ];
+
   @override
   void initState() {
     // TODO: implement initState
@@ -44,7 +60,7 @@ class otherSpecialestNotesState extends State<otherSpecialestNotes>{
         backgroundColor: primaryColor,
       ),
       body: Container(
-        color: primaryLightColor,
+        color: Color(0xffF9F5FF),
           width: size.width,
           height: size.height,
           padding: EdgeInsets.symmetric(horizontal: 8,vertical: 8),
@@ -95,13 +111,13 @@ class otherSpecialestNotesState extends State<otherSpecialestNotes>{
                                     Row(
                                       mainAxisAlignment: MainAxisAlignment.end,
                                       children: [
-                                        Text("1/10/2023",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                                        Text(dd[index],style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
                                         SizedBox(width: 8,),
                                         Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
                                       ],
                                     ),
                                     SizedBox(height: 20,),
-                                    Text("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                                    Text(notes[index],textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
                                     SizedBox(height: 10,),
                                   ],
                                 ),

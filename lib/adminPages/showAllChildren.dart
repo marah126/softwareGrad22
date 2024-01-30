@@ -23,9 +23,9 @@ class _viewChidrenState extends State<viewChildren> {
   ];
    String selectedValue1 = options1.first;
   static List<String> options1 = [
-    'مـتلازمـة داون',
-    'تـوحـد',
-    'صـعوبـة فـي الـتـعلـم',
+    'متلازمة داون',
+    'توحد',
+    'صعوبة في التعلم',
   ];
   late String selectedValue2 ;
    List<String> options2 = [];
@@ -37,7 +37,7 @@ class _viewChidrenState extends State<viewChildren> {
     'وظيفي',
     'تربية خاصة',
     'علاج طبيعي',
-    'اللغة و النطق ',
+    'اللغة و النطق',
   ];
   late String svalue;
   List<String> soptions = [
@@ -71,6 +71,7 @@ class _viewChidrenState extends State<viewChildren> {
 
   Future<void> filter()async{
     print("search by $searchBy");
+    print(value2);
     final response=await http.get(Uri.parse("$ip/sanad/filterChildren?searchBy=$searchBy&value=$value2"));
     if(response.statusCode==200){
       children.clear();
@@ -252,7 +253,7 @@ class _viewChidrenState extends State<viewChildren> {
                               searchBy="birthYear";
                             } else if (newValue == 'الجلسة') {
                               soptions = options6;
-                              searchBy="sessions";
+                              searchBy="session";
                             }
                             svalue=soptions.first;
                           });
@@ -334,9 +335,9 @@ class _viewChidrenState extends State<viewChildren> {
                           children: <Widget>[
                             ElevatedButton(
                               onPressed: () {
-                                print(imagePath[
-                                    imageID.indexOf(idd[index])]);
-                                id = idd[index];
+                                // print(imagePath[
+                                //     imageID.indexOf(idd[index])]);
+                                 id = idd[index];
                                 print(index);
                                 print(id);
                                 _onPressed(context, id);

@@ -21,8 +21,8 @@ class spHomePage extends StatefulWidget{
 
 class spHomePageState extends State<spHomePage>{
 
-  late String id;
-   String name="خديجة دريني";
+  // late String id;
+   String name="سارة حنو";
 
   List<dynamic> data=[] ;
   List<DateTime> date=[];
@@ -37,34 +37,50 @@ class spHomePageState extends State<spHomePage>{
   void initState() {
     super.initState();
     setState(()  {
-      id = widget.id;
-      //name=widget.name;
+      //id = widget.id;
+      getspname();
       now =now.subtract(Duration(minutes: 30));
       getSPsessionsToday();
       print("nnnn"+now.toString());
     });
-    print("home page id" + id);
+    print("home page id" + widget.id);
+  }
+
+
+  Future<void> getspname()async{
+    print(widget.id);
+    final nameRes=await  http.get(Uri.parse("$ip/sanad/getSpNameee?id=${widget.id}"));
+    if(nameRes.statusCode==200){
+      setState(() {
+        print(nameRes.body);
+        final d=jsonDecode(nameRes.body);
+        name=d['firstName']+" "+d['lastName'];
+        print(name);
+      });
+    }
   }
 
   Future<void> getSPsessionsToday()async{
     late final Map<String, dynamic>? data2;
-    List<String> spname=name.split(" ");
+    // List<String> spname=name.split(" ");
     // final res = await http.get(
     // Uri.parse(ip + '/sanad/getspId?fname=${spname[0].trim()}&lastName=${spname[1].trim()}'),
     // );
     // data2=jsonDecode(res.body);
    // id=data2!['idd'];
-    print("id"+id);
+    print("id "+widget.id);
+    print("nameeeee   $name");
 
     final response = await http.get(
-      Uri.parse(ip + '/sanad/getTODAYSessionsBySP?sp=$name'),
+      Uri.parse('$ip/sanad/getTODAYSessionsBySP?sp=$name'),
     );
 
     if (response.statusCode == 200) {
-      print("okkk");
+      print("okkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkkk");
       print(response.body);
       data = jsonDecode(response.body);
-      for(int i=0 ; i<data.length ; i++){
+      print(response.body);
+      for(int i=0 ; i<data!.length ; i++){
         setState(() {
           d=DateTime.parse(data[i]['date']).toLocal();
           print(d.toString());
@@ -117,26 +133,7 @@ class spHomePageState extends State<spHomePage>{
               ),
             ),
             SizedBox(height: 10,),
-            Card(
-              color: primaryLightColor,
-              elevation: 2,
-              child: Padding(
-                padding: EdgeInsets.symmetric(vertical: 10,horizontal: 5),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text(doneSessions.toString(),style: TextStyle(fontFamily: 'myFont',fontSize: 18,color: secondaryColor,fontWeight: FontWeight.bold)),
-                    SizedBox(width: 20,),
-                    Text(": عــدد الـجلـسـات الـمـنـجـزة",style: TextStyle(fontFamily: 'myFont',fontSize: 20,color: secondaryColor,fontWeight: FontWeight.bold)),
-                    SizedBox(width: 5,),
-                    Icon(Icons.done,color: secondaryColor,)
-                  ],
-                ),
-              ),
-            ),
-            SizedBox(
-              height: 10,
-            ),
+            
             Expanded(
               child: SingleChildScrollView(
                 child: ListView.builder(
@@ -181,7 +178,7 @@ class spHomePageState extends State<spHomePage>{
                                   onTap: () {
                                     Navigator.push(
                                       context, MaterialPageRoute(builder: (context){
-                                        return sessionNotes(id: id,name: data[index]['child'],session: data[index]['session'],date: DateTime.parse(data[index]['date']).toLocal(),index: index,);}));},
+                                        return sessionNotes(id: widget.id,name: data[index]['child'],session: data[index]['session'],date: DateTime.parse(data[index]['date']).toLocal(),index: index,);}));},
                                   child: Text("تــوثــيــق",style: TextStyle(
                                     fontFamily: 'myFont',
                                     fontSize: 16.0,

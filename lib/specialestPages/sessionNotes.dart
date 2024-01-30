@@ -65,7 +65,7 @@ class sessionNotesState extends State<sessionNotes>{
       final response = await http
           .post(Uri.parse(ip+"/sanad/addNotes"), body: {
             'idd':childID,
-            'specialest':name,
+            'specialest':id,
             'session':session,
             'date':date.toUtc().toIso8601String(),
             'personalNotes':personalNotes.text,

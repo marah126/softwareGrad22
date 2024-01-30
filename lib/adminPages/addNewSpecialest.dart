@@ -28,7 +28,7 @@ class _newSpecialestState extends State<newSpecialest> {
     'وظيفي',
     'تربية خاصة',
     'علاج طبيعي',
-    'اللغة و النطق ',
+    'اللغة و النطق',
   ];
   String selectedValue3 = sessions.first;
   String ss="";

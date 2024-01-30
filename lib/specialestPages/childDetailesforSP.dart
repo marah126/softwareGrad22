@@ -4,6 +4,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:sanad_software_project/auuth/signup.dart';
+import 'package:sanad_software_project/specialestPages/objectives.dart';
 import 'package:sanad_software_project/specialestPages/otherSPNotes.dart';
 import 'package:sanad_software_project/theme.dart';
 import 'package:http/http.dart' as http;
@@ -25,9 +26,8 @@ class childDetailesState extends State<childDetailes>{
   late String id;
   late String name;
   final List<Map<String, String>> rowData = [
-    {'column1': 'Row 1 ', 'column2': 'Row 1 ', 'column3': 'Row 1 '},
-    {'column1': 'Row 2 ', 'column2': 'Row 2 ', 'column3': 'Row 2 '},
-    {'column1': 'Row 3 ', 'column2': 'Row 3 ', 'column3': 'Row 3 '},
+    {'column1': 'ليلى دويكات', 'column2': '1', 'column3': 'اللغة والنطق'},
+    
   ];
 
   @override
@@ -57,7 +57,7 @@ class childDetailesState extends State<childDetailes>{
                 Container(
                   width: 250,
                   child: ClipOval(
-                    child: Image.asset("assets/images/background.png",width: 250,height: 250,fit: BoxFit.cover,)),
+                    child: Image.asset("assets/images/R.jpg",width: 250,height: 250,fit: BoxFit.cover,)),
                 ),
                 SizedBox(height: 20,),
                 Card(
@@ -98,7 +98,7 @@ class childDetailesState extends State<childDetailes>{
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                        Text("تلبيتالبي",style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'myFont',fontSize: 18,color: Colors.black87),),
+                        Text("متلازمة داون",style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'myFont',fontSize: 18,color: Colors.black87),),
                         SizedBox(width: 15,),
                         Text(": الــتـشـخـيـص",style: TextStyle(fontWeight: FontWeight.bold,fontFamily: 'myFont',fontSize: 18,color: Colors.black87),),
                       ],),
@@ -148,7 +148,7 @@ class childDetailesState extends State<childDetailes>{
                                 ),
                                 onPressed: () {
                                   print(index);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context){return otherSpecialestNotes(childID: rowData[index]['column1']!,sesison: rowData[index]['column2']!,spName: rowData[index]['column1']!,);}));
+                                  Navigator.push(context,MaterialPageRoute(builder: (context){return otherSpecialestNotes(childID: rowData[index]['column1']!,sesison: rowData[index]['column3']!,spName: rowData[index]['column1']!,);}));
                                   
                                 },
                                 child: Padding(
@@ -203,18 +203,79 @@ class childDetailesState extends State<childDetailes>{
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text("1/10/2023",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                                    Text("31/12/2023",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
                                     SizedBox(width: 8,),
                                     Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
                                   ],
                                 ),
                                 SizedBox(height: 20,),
-                                Text("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                                Text("لاحظت تشتت تركيز الطفل بهذه الجلسة ومواجهة صعوبة في التعامل معه نظراً لمزاجه المتعكر",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
                                 SizedBox(height: 10,),
                                 Divider(thickness: 2,),
+                                SizedBox(height: 10,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text("5/1/2024",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                                    SizedBox(width: 8,),
+                                    Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
+                                  ],
+                                ),
+                                SizedBox(height: 20,),
+                                Text("استجابة الطفل هذه الجلسة افضل من السابقة لكن لازال يجب العمل على موضوع التركيز",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                                SizedBox(height: 10,),
+                                Divider(thickness: 2,),
+                                SizedBox(height: 10,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text("12/1/2024",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                                    SizedBox(width: 8,),
+                                    Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
+                                  ],
+                                ),
+                                SizedBox(height: 20,),
+                                Text("تحسن ملحوظ في الاستجابة للتعليمات",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                                SizedBox(height: 10,),
+                                Divider(thickness: 2,),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text("29/1/2024",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                                    SizedBox(width: 8,),
+                                    Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
+                                  ],
+                                ),
+                                SizedBox(height: 20,),
+                                Text("تفاعل ممتاز وتركيز عالي اثناء الجلسة ",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                                SizedBox(height: 10,),
+                                Divider(thickness: 2,),
+
                               ],
                             );
-                          })
+                          }),
+                          ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: primaryColor,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20.0),
+                          ),
+                        ),
+                        onPressed: () async {
+                          print("inside func");
+                          Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            return goals(childId: "123456789", spId: "987654321");
+                          },));
+                          
+                        },
+                        child: Text(
+                          "الأهــداف",
+                          style: TextStyle(
+                              fontFamily: 'myFont',
+                              fontWeight: FontWeight.bold,
+                              color: Colors.white,
+                              fontSize: 18),
+                        )),
                           ],
                         )
                     )

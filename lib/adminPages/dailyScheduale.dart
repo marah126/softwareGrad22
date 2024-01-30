@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/date_symbol_data_local.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:sanad_software_project/components/rounded_button.dart';
@@ -26,16 +27,16 @@ class dailySchedualState extends State<dailySchedual> {
   List<String> sp = [];
   List<String> sessions = [];
    Map<String, Color> colorMap = {
-    'اللغة والنطق':Color.fromARGB(255, 202, 172, 235),
-    'سلوكي': Color(0xffb1a1b3),
-    'وظيفي': Color(0xfffff9e6),
-    'تربية خاصة': Color(0xffe6f6ff),
-    'علاج طبيعي': Color(0xffEBFFE5)
+    'الـلغـة و نــطــق': Color(0xffe6f6ff),
+    'ســلــوكــي': Color(0xffb1a1b3),
+    'وظــيــفــي': Color(0xfffff9e6),
+    'تــربـيـة خـاصـة': Color(0xffe6f6ff),
+    'عــلاج طــبـيـعي': Color(0xffEBFFE5)
   };
   @override
   void initState() {
     super.initState();
-
+    initializeDateFormatting('ar');
     getAllSessions();
   }
 

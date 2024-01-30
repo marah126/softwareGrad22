@@ -200,26 +200,26 @@ class _DetailsPageState extends State<DetailsPage> {
                         }),
                       ),
                       SizedBox(height: 50),
-                      ElevatedButton(
-                          onPressed: () {
-                            // Navigator.push(
-                            //   context,
-                            //   MaterialPageRoute(
-                            //       builder: (context) =>
-                            //           AnotherPage()), // Navigate to AnotherPage
-                            // );
-                          },
-                          child: Text(
-                            'تـعـديـل الـجـلـسـات',
-                            style: TextStyle(fontSize: 20,fontFamily: 'myFont'),
-                          ),
-                          style: ElevatedButton.styleFrom(
-                            primary: Color(0xFF6F35A5),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(
-                                  29), // Optional: for custom shapes
-                            ),
-                          )),
+                      // ElevatedButton(
+                      //     onPressed: () {
+                      //       // Navigator.push(
+                      //       //   context,
+                      //       //   MaterialPageRoute(
+                      //       //       builder: (context) =>
+                      //       //           AnotherPage()), // Navigate to AnotherPage
+                      //       // );
+                      //     },
+                      //     child: Text(
+                      //       'تـعـديـل الـجـلـسـات',
+                      //       style: TextStyle(fontSize: 20,fontFamily: 'myFont'),
+                      //     ),
+                      //     style: ElevatedButton.styleFrom(
+                      //       primary: Color(0xFF6F35A5),
+                      //       shape: RoundedRectangleBorder(
+                      //         borderRadius: BorderRadius.circular(
+                      //             29), // Optional: for custom shapes
+                      //       ),
+                      //     )),
                     ],
                   ),
                 ),
@@ -275,6 +275,35 @@ void _showImageDialog(BuildContext context) {
             width: 200.0, 
             height: 200.0, 
             fit: BoxFit.cover),
+          actions: [
+            TextButton(
+              
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('إغلاق',style: TextStyle(fontFamily: 'myFont',fontSize: 18,color: primaryColor)),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+void _showReportDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          icon: imageID.isEmpty?Icon(Icons.error):Icon(Icons.done),
+          title: Text('الــتـقرير الــطــبـي',style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 20)),
+          content: Text("لــم يــتــم تــحــمــيــل الــتـقـريـر الـطـبـي",
+            style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 20,color: primaryColor),)
+          // Image.network(
+          //   imageID,
+          //   width: 200.0, 
+          //   height: 200.0, 
+           // fit: BoxFit.cover),
+           ,
           actions: [
             TextButton(
               
@@ -587,7 +616,7 @@ void _showImageDialog(BuildContext context) {
                                     ),
                                   ),
                                   Spacer(),
-                                  Text(' هـويـة الـطـفـل',
+                                  Text(' صورة الهـويـة',
                                       style: TextStyle(
                                           fontFamily: 'myfont',
                                           fontWeight: FontWeight.bold,
@@ -657,6 +686,7 @@ void _showImageDialog(BuildContext context) {
                                   ElevatedButton(
                                     onPressed: () {
                                       //    _openFile();
+                                      _showReportDialog(context);
                                       print('okkkkkk');
                                     },
                                     style: ButtonStyle(

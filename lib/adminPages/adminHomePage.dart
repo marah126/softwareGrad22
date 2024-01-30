@@ -48,7 +48,7 @@ class _adminHomePageState extends State<adminHomePage> {
   }
 
   Color hoveredColor = primaryLightColor;
-   Widget container=adminHome();
+   Widget container=dailySchedual();
   @override
   Widget build(BuildContext context) {
    Size size=MediaQuery.of(context).size;               
@@ -98,7 +98,7 @@ class _adminHomePageState extends State<adminHomePage> {
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        container=adminHome();
+                        container=dailySchedual();
                       });
                     },
                     style: TextButton.styleFrom(
@@ -333,7 +333,7 @@ class _adminHomePageState extends State<adminHomePage> {
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          "إضـافـة",
+                          "الــمـنـشـورات",
                           style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'myFont',
@@ -342,7 +342,7 @@ class _adminHomePageState extends State<adminHomePage> {
                         ),SizedBox(
                             width: 8),
                         Icon(
-                          Icons.person_add, // Replace with the desired icon
+                          Icons.post_add, // Replace with the desired icon
                           color: primaryColor, // Set the color of the icon
                         ),
                         SizedBox(width: 30,),

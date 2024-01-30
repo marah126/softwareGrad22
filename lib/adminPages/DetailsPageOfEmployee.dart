@@ -6,6 +6,7 @@ import 'package:open_file/open_file.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter/widgets.dart';
+import 'package:sanad_software_project/adminPages/pdf.dart';
 import 'package:sanad_software_project/theme.dart';
 
 class spDetailsPage extends StatefulWidget {
@@ -182,6 +183,34 @@ void _showImageDialog(BuildContext context) {
       },
     );
   }
+void _showCVDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+           icon: imageID.isEmpty?Icon(Icons.error):Icon(Icons.done),
+          title: Text(' السيرة الذاتية ',style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 20)),
+           content: imageID.isEmpty?Text("لــم يــتــم تــحــمــيــل السيرة الذاتية",
+            style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 20,color: primaryColor),):Image.network(
+            imageID, // Replace with your image URL
+            width: 200.0, // Set the desired width of the image
+            height: 200.0, // Set the desired height of the image
+            fit: BoxFit.cover)
+          //   // Adjust the BoxFit property as needed
+          // content: Image.asset("assets/images/CV.jpeg")
+          ,
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Close'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
   void _showDialog(BuildContext context, String s) {
     List<Map<String, String>> tableData = [
@@ -235,7 +264,7 @@ void _showImageDialog(BuildContext context) {
                   Card(
                     child: Row(
                       children: <Widget>[
-                        Text(" 5",
+                        Text(" 1",
                             style: TextStyle(
                                 fontFamily: 'myfont',
                                 fontWeight: FontWeight.bold,
@@ -370,30 +399,30 @@ void _showImageDialog(BuildContext context) {
               child: Column(
                 children: <Widget>[
                   Column(children: <Widget>[
-                    Card(
-                      color: Colors.white,
-                      child: Row(
-                        children: <Widget>[
-                          Text(id,
-                              style: TextStyle(
-                                  fontFamily: 'myfont',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17)),
-                          Spacer(),
-                          Text('الـبريـد الإلكتروني',
-                              style: TextStyle(
-                                  fontFamily: 'myfont',
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 17)),
-                          SizedBox(width: 10),
-                          Icon(
-                            Icons.email,
-                            color: Color.fromARGB(255, 111, 53, 165),
-                          )
-                        ],
-                      ),
-                    ),
-                    SizedBox(height: 20),
+                    // Card(
+                    //   color: Colors.white,
+                    //   child: Row(
+                    //     children: <Widget>[
+                    //       Text(id,
+                    //           style: TextStyle(
+                    //               fontFamily: 'myfont',
+                    //               fontWeight: FontWeight.bold,
+                    //               fontSize: 17)),
+                    //       Spacer(),
+                    //       Text('الـبريـد الإلكتروني',
+                    //           style: TextStyle(
+                    //               fontFamily: 'myfont',
+                    //               fontWeight: FontWeight.bold,
+                    //               fontSize: 17)),
+                    //       SizedBox(width: 10),
+                    //       Icon(
+                    //         Icons.email,
+                    //         color: Color.fromARGB(255, 111, 53, 165),
+                    //       )
+                    //     ],
+                    //   ),
+                    // ),
+                    // SizedBox(height: 20),
                     Card(
                       color: Colors.white,
                       child: Row(
@@ -520,6 +549,13 @@ void _showImageDialog(BuildContext context) {
                           ElevatedButton(
                             onPressed: () {
                               //    _openFile();
+                              // Navigator.push(
+                              //       context,
+                              //       MaterialPageRoute(
+                              //         builder: (context) => PDFScreen(pdfPath: 'assets/omar.pdf'),
+                              //       ),
+                              //     );
+                              _showCVDialog(context);
                               print('okkkkkk');
                             },
                             style: ButtonStyle(

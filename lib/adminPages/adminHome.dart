@@ -147,7 +147,7 @@ class adminHomeState extends State<adminHome>{
           id: event.id,
           startTime: event.from,
           endTime: event.to,
-          subject: event.child+"  --  "+event.specialest+"  --  "+event.session,
+          subject:"الــطــفـل: " + event.child+" \n "+event.specialest+" \n "+event.session,
           color: event.color,
           recurrenceRule: 'FREQ=DAILY;INTERVAL=7;UNTIL=$lastDayOfCurrentMonth'));
     }

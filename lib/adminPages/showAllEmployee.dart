@@ -32,7 +32,7 @@ class viewSpecialestState extends State<viewSpecialest> {
     'وظيفي',
     'تربية خاصة',
     'علاج طبيعي',
-    'اللغة و النطق ',
+    'اللغة و النطق',
   ];
   String svalue = '-----';
   List<String> soptions = [];

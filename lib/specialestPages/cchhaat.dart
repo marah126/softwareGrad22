@@ -8,7 +8,8 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class ChatScreen2 extends StatefulWidget {
   final String receiverID;
   final String receiverName;
-  const ChatScreen2({super.key, required this.receiverID, required this.receiverName});
+  final String myId;
+  const ChatScreen2({super.key, required this.receiverID, required this.receiverName, required this.myId});
   @override
   _ChatScreenState createState() => _ChatScreenState();
 }
@@ -113,14 +114,14 @@ class _ChatScreenState extends State<ChatScreen2> {
               final messages=snapshot.data!.docs;
               print(messages.length);
               for(var message in messages){
-                if((message.get('sender')=='987654321' && message.get('receiver')==receiverID) || (message.get('sender')==receiverID && message.get('receiver')=='987654321')) {
+                if((message.get('sender')==widget.myId && message.get('receiver')==receiverID) || (message.get('sender')==receiverID && message.get('receiver')==widget.myId)) {
                   print("tteexxtt"+message.get('text'));
                   final mText=message.get('text');
                   final sender=message.get('sender');
                   final receiver=message.get('receiver');
                   final current ='admin';
-                  final widget=messageContainer(sender: receiverName,text: mText,isME: sender=="987654321",); //currentUser==sender
-                  messageWidget.add(widget);
+                  final widgett=messageContainer(sender: receiverName,text: mText,isME: sender==widget.myId,); //currentUser==sender
+                  messageWidget.add(widgett);
                 }
               }
               // for(var message in messages){
@@ -170,7 +171,7 @@ class _ChatScreenState extends State<ChatScreen2> {
                     onPressed: () {
                       firestore.collection('messages').add({
                         'text':messageText.text,
-                        'sender':'987654321',
+                        'sender':widget.myId,
                         'receiver':receiverID,
                         'time':FieldValue.serverTimestamp(),
                       });

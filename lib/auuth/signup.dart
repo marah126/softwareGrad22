@@ -178,7 +178,7 @@ showDialog<void>(
   try {
     UserCredential userCredential = await FirebaseAuth.instance.createUserWithEmailAndPassword(
       email: emailController.text.trim(),
-      password: passwordController.text.toLowerCase(),
+      password: passwordController.text.trim(),
     );
 
     print('User signed up: ${userCredential.user!.uid}');

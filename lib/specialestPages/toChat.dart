@@ -14,6 +14,9 @@ import 'package:sanad_software_project/theme.dart';
 
 
 class chat2 extends StatefulWidget {
+  final String id;
+
+  const chat2({super.key, required this.id});
   @override
   _chatState createState() => _chatState();
 }
@@ -164,7 +167,7 @@ class _chatState extends State<chat2> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChatScreen2(receiverID: "admin",receiverName: "الإدارة",)
+                        builder: (context) => ChatScreen2(receiverID: "admin",receiverName: "الإدارة",myId: widget.id,)
                       ),
                     );
                   },
@@ -231,7 +234,7 @@ class _chatState extends State<chat2> {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => ChatScreen2(receiverID: data[index]['idd'],receiverName: data[index]['firstName'],)
+                        builder: (context) => ChatScreen2(receiverID: data[index]['idd'],receiverName: data[index]['firstName'],myId: widget.id,)
                       ),
                     );
                   },

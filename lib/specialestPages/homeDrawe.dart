@@ -27,8 +27,8 @@ class spHomeDrawer extends StatefulWidget{
 }
 
 class _spHomeDrawerState extends State<spHomeDrawer> {
-   String id="987654321";
-   String name="سارة حنو";
+   late String id;
+    String name ="";
   final auth=FirebaseAuth.instance;
   void getUser(){
     try{
@@ -52,7 +52,7 @@ class _spHomeDrawerState extends State<spHomeDrawer> {
   }
 
   Color hoveredColor = primaryLightColor;
-   late Widget container=spHomePage(id: id,name: "خديجة دريني",);
+   late Widget container=spHomePage(id: id,name:name,);
 
     String imageUrl = '';
 
@@ -375,7 +375,7 @@ Future<void> getSPname()async{
           IconButton(
             icon: Icon(Icons.message),
             onPressed: () {
-               Navigator.push(context, MaterialPageRoute(builder: (context){return chat2();}));
+               Navigator.push(context, MaterialPageRoute(builder: (context){return chat2(id: id,);}));
             },
           ),
          ],

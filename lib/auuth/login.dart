@@ -83,7 +83,7 @@ class _LoginState extends State<Login> {
             }
             else if(type=="child"){
               Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) {
-                return adminHomePage();
+                return parentHomeDrawer(id:id);
               }));
             }
             else{

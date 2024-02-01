@@ -11,8 +11,10 @@ import 'package:sanad_software_project/adminPages/c.dart';
 import 'package:sanad_software_project/adminPages/chat.dart';
 import 'package:sanad_software_project/adminPages/showAllChildren.dart';
 import 'package:sanad_software_project/adminPages/showAllEmployee.dart';
+import 'package:sanad_software_project/parents.dart/allSessions.dart';
 import 'package:sanad_software_project/parents.dart/homePageParent.dart';
 import 'package:sanad_software_project/parents.dart/personalPage.dart';
+import 'package:sanad_software_project/parents.dart/specialistEvaluation.dart';
 import 'package:sanad_software_project/specialestPages/empPersonalInformation.dart';
 import 'package:sanad_software_project/specialestPages/empVications.dart';
 import 'package:sanad_software_project/specialestPages/homePage.dart';
@@ -121,8 +123,8 @@ Future<void> getSPname()async{
                     margin: EdgeInsets.only(bottom: 10),
                     height: 100,
                     child: ClipOval(
-                      child: imageUrl.isNotEmpty? (Image.network(imageUrl, height: 120.0,width: 150.0,fit: BoxFit.cover,)): 
-                                Image.asset('assets/images/nurse.png', width: 120, height: 200,fit: BoxFit.cover,) ,
+                      child: imageUrl.isNotEmpty? (Image.network(imageUrl, height: 120.0,width: 120.0,fit: BoxFit.cover,)): 
+                                Image.asset('assets/images/profileImage.jpg', width: 120, height: 120,fit: BoxFit.cover,) ,
                     ),
                   ),
                   Text(
@@ -256,7 +258,7 @@ Future<void> getSPname()async{
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        container=vications(id:id);
+                        container=spEvaluation(id:id);
                       });
                     },
                     style: TextButton.styleFrom(
@@ -296,7 +298,14 @@ Future<void> getSPname()async{
         backgroundColor: primaryColor,
         automaticallyImplyLeading: false,
         actions: [
-         Builder(
+         
+          IconButton(
+            icon: Icon(Icons.wechat),
+            onPressed: () {
+              // Navigator.push(context, MaterialPageRoute(builder: (context){return ChatScreen();}));
+            },
+          ),
+          Builder(
           builder: (BuildContext context) {
            return IconButton(
               icon: Icon(Icons.list),
@@ -306,12 +315,6 @@ Future<void> getSPname()async{
             );
           }
          ),
-          IconButton(
-            icon: Icon(Icons.message),
-            onPressed: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context){return ChatScreen();}));
-            },
-          ),
          ],
        ),
        body: container

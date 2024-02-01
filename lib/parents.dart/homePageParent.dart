@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors, prefer_interpolation_to_compose_strings
 
+import 'dart:convert';
+import 'package:http/http.dart' as http;
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart';
@@ -25,9 +27,9 @@ class childSchduleState extends State<childSchdule> {
   Map<String, Color> colorMap = {
     'الـلغـة و نــطــق': primaryLightColor,
     'ســلــوكــي': Color(0xffb1a1b3),
-    'وظــيــفــي': Color(0xfffff9e6),
-    'تــربـيـة خـاصـة': Color(0xffe6f6ff),
-    'عــلاج طــبـيـعي': Color(0xffEBFFE5)
+    'وظــيــفــي': Color.fromARGB(255, 243, 239, 226),
+    'تــربـيـة خـاصـة': Color.fromARGB(255, 218, 227, 232),
+    'عــلاج طــبـيـعي': Color.fromARGB(255, 229, 237, 227)
   };
 
   static const List<String> sessions = [
@@ -38,10 +40,36 @@ class childSchduleState extends State<childSchdule> {
     'عــلاج طــبـيـعي',
   ];
 
+
+  Future<void> getAllSessions()async{
+
+    CustomEvent e;
+    DateTime dd;
+    String s;
+    final allSessions=await http.get(Uri.parse(ip+"/sanad/getTODAYSessionsBychild?child=مها دريني"));
+    if (allSessions.statusCode == 200) {
+        String childName;
+        final List<dynamic> data = jsonDecode(allSessions.body);
+        //autoID=data.length;
+        //print("autoid= "+autoID.toString());
+        for(int i=0;i<data.length;i++){
+          setState(() {
+            print(data[i]);
+          dd=DateTime.parse(data[i]['date']).toLocal();
+          s=data[i]['session'];
+          e=CustomEvent(data[i]['idd'], data[i]['child'], data[i]['specialest'], data[i]['session'], dd, dd.add(Duration(minutes: 40)), colorMap[s.toLowerCase()]!);
+          events.add(e);
+          });
+        }
+    }
+  }
+
+
   @override
   void initState() {
     super.initState();
     id = widget.id;
+    getAllSessions();
     print("home parent id " + id);
   }
 
@@ -73,14 +101,16 @@ class childSchduleState extends State<childSchdule> {
             centerTitle: true,
           ),
           body: Container(
+            color: Color(0xffF9F5FF),
             width: size.width,
             height: size.height,
+            padding: EdgeInsets.only(left: 10,right: 5),
             child: SfCalendar(
               dataSource: _getCalendarAppointments(),
               view: CalendarView.schedule,
               todayHighlightColor: primaryColor,
               scheduleViewSettings: ScheduleViewSettings(
-                appointmentItemHeight: 200,
+                appointmentItemHeight: 150,
                 hideEmptyScheduleWeek: true,
                 appointmentTextStyle: TextStyle(
                     color: Colors.black, fontFamily: 'myFont', fontSize: 16),
@@ -89,11 +119,13 @@ class childSchduleState extends State<childSchdule> {
                   endDateFormat: " ",
                 ),
                 dayHeaderSettings: DayHeaderSettings(
-                    dayTextStyle: TextStyle(color: primaryColor, fontSize: 19)),
+                  width: 80,
+                    dayTextStyle: TextStyle(color: primaryColor, fontSize: 18,fontFamily: 'myFont')),
                 monthHeaderSettings: MonthHeaderSettings(
+                  height: 80, textAlign: TextAlign.center,
                     monthTextStyle: TextStyle(
-                        color: primaryLightColor, fontWeight: FontWeight.bold),
-                    backgroundColor: secondaryColor),
+                        color: primaryLightColor, fontWeight: FontWeight.bold,fontFamily: 'myFont',fontSize: 22),
+                    backgroundColor: secondaryColor)
               ),
               onTap: (CalendarTapDetails details) {
                 if (details.targetElement == CalendarElement.appointment) {
@@ -119,8 +151,7 @@ class childSchduleState extends State<childSchdule> {
           id: event.id,
           startTime: event.from,
           endTime: event.to,
-          subject: event.child +
-              "  --  " +
+          subject: 
               event.specialest +
               "  --  " +
               event.session,

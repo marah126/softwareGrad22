@@ -1,8 +1,9 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables
+// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings, prefer_const_literals_to_create_immutables, use_build_context_synchronously
 
 import 'dart:convert';
 
 import 'package:calendar_view/calendar_view.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:sanad_software_project/theme.dart';
@@ -21,23 +22,31 @@ class profileChildState extends State<profileChild> {
 
   TextEditingController nameController = TextEditingController();
   TextEditingController phoneController = TextEditingController();
+  TextEditingController mphoneController = TextEditingController();
+
   TextEditingController _textFieldController = TextEditingController();
   TextEditingController emailController = TextEditingController();
 
   bool pressed = false;
   String name = '';
-  String phone = '';
+  String fatherphone = '';
+  String motherphone='';
   String emailString = 'sarahhinno8@gmail.com';
   String idd = '';
   String startDate = " ";
+  String birthDate = '';
+  String fsession = '';
+  late DateTime bd;
   late DateTime sd;
-  String sp = '';
+  late DateTime fs;
+  String diagnose = '';
   String imageUrl = "";
+  List <dynamic> sessions=[];
 
   bool _isTextFieldEnabled = false;
 
   Future<void> getspinfo() async {
-    final spInfo = await http.get(Uri.parse('$ip/sanad/getSPInfoByID?id=$id'));
+    final spInfo = await http.get(Uri.parse('$ip/sanad/getChildInfoByID?id=$id'));
     final email = await http.get(Uri.parse('$ip/sanad/getEmail?id=$id'));
     if (spInfo.statusCode == 200) {
       print("body" + spInfo.body);
@@ -49,11 +58,22 @@ class profileChildState extends State<profileChild> {
           spInfoBody['thirdName'] +
           " " +
           spInfoBody['lastName'];
-      phone = spInfoBody['phone'];
-      sp = spInfoBody['specialise'];
+      fatherphone = spInfoBody['fatherPhone'];
+      motherphone = spInfoBody['motherPhone'];
+
+      diagnose = spInfoBody['diagnosis'];
       idd = id;
-      sd = DateTime.parse(spInfoBody['startDate']).toLocal();
+      bd = DateTime.parse(spInfoBody['birthDate']).toLocal();
+      sd = DateTime.parse(spInfoBody['enteryDate']).toLocal();
+      fs = DateTime.parse(spInfoBody['firstSessionDate']).toLocal();
+
+      birthDate = DateFormat('yyyy/MM/dd').format(bd);
       startDate = DateFormat('yyyy/MM/dd').format(sd);
+      fsession = DateFormat('yyyy/MM/dd').format(fs);
+      sessions=spInfoBody['sessions'];
+      print(sessions.length);
+      print(sessions[0]['specialest']);
+
 
       if (email.statusCode == 200) {
         print("email " + email.body);
@@ -65,7 +85,7 @@ class profileChildState extends State<profileChild> {
 
   Future<void> getImageUrl() async {
     print(id);
-    final String serverUrl = '$ip/sanad/getSPImage?id=$id';
+    final String serverUrl = '$ip/sanad/getImage?id=$id';
 
     try {
       final response = await http.get(Uri.parse(serverUrl));
@@ -82,6 +102,33 @@ class profileChildState extends State<profileChild> {
       print('Error getting image: $error');
     }
   }
+
+  Future<void> updatee()async{
+    bool phone=false;
+    bool e=false;
+    final update= await http.put(Uri.parse('$ip/sanad/updatePhone'),body: {
+      'id':idd,
+      'motherPhone':motherphone,
+      'fatherPhone':fatherphone
+    });
+   
+    if(update.statusCode==200){
+      phone=true;
+    }
+    else{
+      print("error in phone update");
+    }
+    
+    if(phone ){
+      showDialog(context: context, builder: (context){
+        return AlertDialog(
+          title: Text("تــم الـــتــعـديــل",style: TextStyle(color: primaryColor,fontFamily: 'myFont',fontSize: 20,fontWeight: FontWeight.bold),),
+        );
+      });
+    }
+  }
+
+
 
   @override
   void initState() {
@@ -113,16 +160,7 @@ class profileChildState extends State<profileChild> {
         height: size.height,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: FutureBuilder(
-              future: getspinfo(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(); // Show a loading indicator
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  // Continue building your UI with the fetched data
-                  return Column(
+          child: Column(
                     children: <Widget>[
                       SizedBox(
                         height: 20,
@@ -189,17 +227,7 @@ class profileChildState extends State<profileChild> {
                                     Expanded(
                                       child: TextField(
                                         controller: emailController,
-                                        enabled: _isTextFieldEnabled,
-                                        onTap: () {
-                                          if (!_isTextFieldEnabled) {
-                                            emailController.clear();
-                                          }
-                                        },
-                                        onChanged: (text) {
-                                          setState(() {
-                                            emailString = emailController.text;
-                                          });
-                                        },
+                                         enabled: false,
                                         decoration: InputDecoration(
                                           labelText: emailString,
                                           labelStyle: TextStyle(
@@ -273,11 +301,11 @@ class profileChildState extends State<profileChild> {
                                         },
                                         onChanged: (text) {
                                           setState(() {
-                                            phone = phoneController.text;
+                                            fatherphone = phoneController.text;
                                           });
                                         },
                                         decoration: InputDecoration(
-                                          labelText: phone,
+                                          labelText: fatherphone,
                                           labelStyle: TextStyle(
                                             color: Colors.black,
                                             fontSize: 20.0,
@@ -287,7 +315,7 @@ class profileChildState extends State<profileChild> {
                                       ),
                                     ),
                                     Text(
-                                      ' رقم هــاــف الأب',
+                                      ' رقم هــاتــف الأب',
                                       textAlign: TextAlign.end,
                                       style: TextStyle(
                                         fontFamily: 'myfont',
@@ -306,20 +334,20 @@ class profileChildState extends State<profileChild> {
                                   children: [
                                     Expanded(
                                       child: TextField(
-                                        controller: phoneController,
+                                        controller: mphoneController,
                                         enabled: _isTextFieldEnabled,
                                         onTap: () {
                                           if (!_isTextFieldEnabled) {
-                                            phoneController.clear();
+                                            mphoneController.clear();
                                           }
                                         },
                                         onChanged: (text) {
                                           setState(() {
-                                            phone = phoneController.text;
+                                            motherphone = mphoneController.text;
                                           });
                                         },
                                         decoration: InputDecoration(
-                                          labelText: phone,
+                                          labelText: motherphone,
                                           labelStyle: TextStyle(
                                             color: Colors.black,
                                             fontSize: 20.0,
@@ -350,7 +378,7 @@ class profileChildState extends State<profileChild> {
                                       child: TextField(
                                         enabled: false,
                                         decoration: InputDecoration(
-                                          labelText: startDate,
+                                          labelText: birthDate,
                                           labelStyle: TextStyle(
                                             color: Colors.black,
                                             fontSize: 20.0,
@@ -412,7 +440,38 @@ class profileChildState extends State<profileChild> {
                                       child: TextField(
                                         enabled: false,
                                         decoration: InputDecoration(
-                                          labelText: "متلازمة داون",
+                                          labelText: fsession,
+                                          labelStyle: TextStyle(
+                                            color: Colors.black,
+                                            fontSize: 20.0,
+                                            fontFamily: 'myfont',
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      '  تـاريـخ أول جـلــسـة',
+                                      textAlign: TextAlign.end,
+                                      style: TextStyle(
+                                        fontFamily: 'myfont',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                    SizedBox(width: 5),
+                                  ],
+                                ),
+                                SizedBox(
+                                  height: 16.0,
+                                ),
+                                Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Expanded(
+                                      child: TextField(
+                                        enabled: false,
+                                        decoration: InputDecoration(
+                                          labelText: diagnose,
                                           labelStyle: TextStyle(
                                             color: Colors.black,
                                             fontSize: 20.0,
@@ -433,6 +492,52 @@ class profileChildState extends State<profileChild> {
                                     SizedBox(width: 5),
                                   ],
                                 ),
+                                SizedBox(height: 16,),
+                                Column(children: [
+                                  Row(children: [
+                                    Text("الأخـصـائـيــة",style: TextStyle(
+                                        fontFamily: 'myfont',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),),
+                                      Spacer(),
+                                      Text("الـعـدد",style: TextStyle(
+                                        fontFamily: 'myfont',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),),
+                                      Spacer(),
+                                      Text("الــجـلـسـة",style: TextStyle(
+                                        fontFamily: 'myfont',
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),),
+                                  ],),
+                                  SizedBox(height: 10,),
+                                  for(int i=0;i<sessions.length;i++)
+                                  Column(
+                                    children:[ Row(children: [
+                                      Text(sessions[i]['specialest'],style: TextStyle(
+                                          fontFamily: 'myfont',
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),),
+                                        Spacer(),
+                                        Text(sessions[i]['no'].toString(),style: TextStyle(
+                                          fontFamily: 'myfont',
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),),
+                                        Spacer(),
+                                        Text(sessions[i]['sessionName'],style: TextStyle(
+                                          fontFamily: 'myfont',
+                                          fontSize: 18,
+                                          fontWeight: FontWeight.bold,
+                                        ),),
+                                    ],),
+                                    SizedBox(height: 10,)
+                                ]),
+                                ],),
                                 SizedBox(height: 40),
                                 Row(
                                   children: [
@@ -481,6 +586,8 @@ class profileChildState extends State<profileChild> {
                                                   nameController.text;
                                               emailController.text =
                                                   nameController.text;
+
+                                                  updatee();
                                             });
                                           },
                                           style: ElevatedButton.styleFrom(
@@ -512,11 +619,15 @@ class profileChildState extends State<profileChild> {
                         child: Image.asset('assets/images/image1.png'),
                       )
                     ],
-                  );
-                }
-              }),
+                  ),
         ),
-      ),
-    );
-  }
+        )
+        );
+
+              
+             
+        
+      
+    
+  } 
 }

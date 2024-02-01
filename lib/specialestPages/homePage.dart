@@ -102,6 +102,7 @@ class spHomePageState extends State<spHomePage>{
     return Scaffold(
       backgroundColor: primaryLightColor,
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         backgroundColor: primaryColor,
       ),
       body: SingleChildScrollView(

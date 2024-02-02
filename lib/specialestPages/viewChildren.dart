@@ -10,8 +10,8 @@ import 'package:http/http.dart' as http;
 
 class myChildren extends StatefulWidget{
   final String id;
-
-  const myChildren({super.key, required this.id});
+  final String myname;
+  const myChildren({super.key, required this.id, required this.myname});
   @override
   State<StatefulWidget> createState() {
     return myChildrenState();
@@ -71,7 +71,7 @@ class myChildrenState extends State<myChildren>{
                       onPressed: () {
                         Navigator.push(
                           context, MaterialPageRoute(builder: (context){
-                            return childDetailes(id: data[index]['idd'], name: children[index]);}));
+                            return childDetailes(id: data[index]['idd'], name: children[index],myid: id,myname: widget.myname,);}));
                       },
                       style: ButtonStyle(
                         backgroundColor:

@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:sanad_software_project/auuth/signup.dart';
 import 'package:sanad_software_project/specialestPages/objectives.dart';
 import 'package:sanad_software_project/specialestPages/otherSPNotes.dart';
@@ -13,8 +14,10 @@ import 'package:http/http.dart' as http;
 class childDetailes extends StatefulWidget{
   final String id;
   final String name;
+  final String myid;
+  final String myname;
 
-  const childDetailes({super.key, required this.id, required this.name});
+  const childDetailes({super.key, required this.id, required this.name, required this.myid, required this.myname});
   @override
   State<StatefulWidget> createState() {
     return childDetailesState();
@@ -29,6 +32,40 @@ class childDetailesState extends State<childDetailes>{
     {'column1': 'ليلى دويكات', 'column2': '1', 'column3': 'اللغة والنطق'},
     
   ];
+  List<dynamic>notes=[];
+  List<dynamic>sessions=[];
+
+  Future<void> getMyNotes()async{
+    final myNotes=await http.get(Uri.parse('$ip/sanad/getmyNotes?spid=${widget.myid}&cid=$id'));
+    if(myNotes.statusCode==200){
+      setState(() {
+        notes=jsonDecode(myNotes.body);
+      });
+      print(notes);
+    }
+  }
+
+  Future<void> getChildInfo() async {
+    Map<String,dynamic> ?data ;
+    final response = await http.get(
+    Uri.parse(ip + '/sanad/getChildInfoByID?id=$id'),
+    );
+
+    if (response.statusCode == 200) {
+      print("okkk");
+      //print(response.body);
+      data = jsonDecode(response.body);
+      setState(() {
+        sessions = data!['sessions'];
+
+      });
+      
+    } else {
+      print(response.reasonPhrase);
+      print("error");
+    }
+  }
+
 
   @override
   void initState() {
@@ -36,6 +73,11 @@ class childDetailesState extends State<childDetailes>{
     super.initState();
     id=widget.id;
     name=widget.name;
+    print("====== $id");
+    print("==========$name");
+    print(widget.myid);
+    getMyNotes();
+    getChildInfo();
   }
 
   @override
@@ -124,6 +166,7 @@ class childDetailesState extends State<childDetailes>{
                                 color: Colors.black87),
                           ),
                           SizedBox(height: 5,),
+                          
                           Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
@@ -139,7 +182,7 @@ class childDetailesState extends State<childDetailes>{
                             child: ListView.builder(
                               physics: NeverScrollableScrollPhysics(),
                               shrinkWrap: true,
-                              itemCount: rowData.length,
+                              itemCount: sessions.length,
                               itemBuilder: (context,index){
                               return TextButton(
                                 style: TextButton.styleFrom(
@@ -148,21 +191,24 @@ class childDetailesState extends State<childDetailes>{
                                 ),
                                 onPressed: () {
                                   print(index);
-                                  Navigator.push(context,MaterialPageRoute(builder: (context){return otherSpecialestNotes(childID: rowData[index]['column1']!,sesison: rowData[index]['column3']!,spName: rowData[index]['column1']!,);}));
+                                  Navigator.push(context,MaterialPageRoute(builder: (context){return otherSpecialestNotes(childID: sessions[index]['sessionName']!,sesison: sessions[index]['sessionName']!,spName: sessions[index]['specialest']!,);}));
                                   
                                 },
                                 child: Padding(
                                   padding: EdgeInsets.only(top: 15),
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(rowData[index]['column1']!,style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: Colors.black87)),
-                                      Spacer(),
-                                      Text(rowData[index]['column2']!,style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: Colors.black87)),
-                                      Spacer(),
-                                      Text(rowData[index]['column3']!,style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: Colors.black87))
-                                    ],
-                                  ),
+                                        child:
+                                        sessions[index]['specialest']==widget.myname?Row() :
+                                       Row(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(sessions[index]['specialest']!,style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: Colors.black87)),
+                                        Spacer(),
+                                        Text(sessions[index]['no']!.toString(),style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: Colors.black87)),
+                                        Spacer(),
+                                        Text(sessions[index]['sessionName']!,style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: Colors.black87))
+                                      ],
+                                                                     ),
+                          
                                 ),
                               );
                               }),
@@ -196,63 +242,83 @@ class childDetailesState extends State<childDetailes>{
                             physics: NeverScrollableScrollPhysics(),
                             padding: EdgeInsets.symmetric(horizontal: 8),
                             shrinkWrap: true,
-                            itemCount: rowData.length,
+                            itemCount: notes.length,
                             itemBuilder: (context,index){
-                            return Column(
-                              children: [
-                                Row(
+                              DateTime d=DateTime.parse(notes[index]['date']).toLocal();
+                              print(d);
+                              // String format=DateFormat()
+                              return Column(
+                                children: [
+                                  Row(
                                   mainAxisAlignment: MainAxisAlignment.end,
                                   children: [
-                                    Text("31/12/2023",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                                    Text(DateFormat("dd/MM/yyyy").format(d),style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
                                     SizedBox(width: 8,),
                                     Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
                                   ],
                                 ),
                                 SizedBox(height: 20,),
-                                Text("لاحظت تشتت تركيز الطفل بهذه الجلسة ومواجهة صعوبة في التعامل معه نظراً لمزاجه المتعكر",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                                Text(notes[index]['personalNotes'],textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
                                 SizedBox(height: 10,),
                                 Divider(thickness: 2,),
                                 SizedBox(height: 10,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text("5/1/2024",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
-                                    SizedBox(width: 8,),
-                                    Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
-                                  ],
-                                ),
-                                SizedBox(height: 20,),
-                                Text("استجابة الطفل هذه الجلسة افضل من السابقة لكن لازال يجب العمل على موضوع التركيز",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
-                                SizedBox(height: 10,),
-                                Divider(thickness: 2,),
-                                SizedBox(height: 10,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text("12/1/2024",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
-                                    SizedBox(width: 8,),
-                                    Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
-                                  ],
-                                ),
-                                SizedBox(height: 20,),
-                                Text("تحسن ملحوظ في الاستجابة للتعليمات",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
-                                SizedBox(height: 10,),
-                                Divider(thickness: 2,),
-                                Row(
-                                  mainAxisAlignment: MainAxisAlignment.end,
-                                  children: [
-                                    Text("29/1/2024",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
-                                    SizedBox(width: 8,),
-                                    Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
-                                  ],
-                                ),
-                                SizedBox(height: 20,),
-                                Text("تفاعل ممتاز وتركيز عالي اثناء الجلسة ",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
-                                SizedBox(height: 10,),
-                                Divider(thickness: 2,),
+                                ],
+                              );
+                            // return Column(
+                            //   children: [
+                            //     Row(
+                            //       mainAxisAlignment: MainAxisAlignment.end,
+                            //       children: [
+                            //         Text("31/12/2023",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                            //         SizedBox(width: 8,),
+                            //         Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
+                            //       ],
+                            //     ),
+                            //     SizedBox(height: 20,),
+                            //     Text("لاحظت تشتت تركيز الطفل بهذه الجلسة ومواجهة صعوبة في التعامل معه نظراً لمزاجه المتعكر",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                            //     SizedBox(height: 10,),
+                            //     Divider(thickness: 2,),
+                            //     SizedBox(height: 10,),
+                            //     Row(
+                            //       mainAxisAlignment: MainAxisAlignment.end,
+                            //       children: [
+                            //         Text("5/1/2024",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                            //         SizedBox(width: 8,),
+                            //         Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
+                            //       ],
+                            //     ),
+                            //     SizedBox(height: 20,),
+                            //     Text("استجابة الطفل هذه الجلسة افضل من السابقة لكن لازال يجب العمل على موضوع التركيز",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                            //     SizedBox(height: 10,),
+                            //     Divider(thickness: 2,),
+                            //     SizedBox(height: 10,),
+                            //     Row(
+                            //       mainAxisAlignment: MainAxisAlignment.end,
+                            //       children: [
+                            //         Text("12/1/2024",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                            //         SizedBox(width: 8,),
+                            //         Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
+                            //       ],
+                            //     ),
+                            //     SizedBox(height: 20,),
+                            //     Text("تحسن ملحوظ في الاستجابة للتعليمات",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                            //     SizedBox(height: 10,),
+                            //     Divider(thickness: 2,),
+                            //     Row(
+                            //       mainAxisAlignment: MainAxisAlignment.end,
+                            //       children: [
+                            //         Text("29/1/2024",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color: secondaryColor)),
+                            //         SizedBox(width: 8,),
+                            //         Text(": الـتــاريـخ",style: TextStyle(fontFamily: 'myFont',fontWeight: FontWeight.bold,fontSize: 17,color:secondaryColor)),
+                            //       ],
+                            //     ),
+                            //     SizedBox(height: 20,),
+                            //     Text("تفاعل ممتاز وتركيز عالي اثناء الجلسة ",textAlign: TextAlign.right,maxLines: null,style: TextStyle(fontFamily: 'myFont',fontSize: 18),),
+                            //     SizedBox(height: 10,),
+                            //     Divider(thickness: 2,),
 
-                              ],
-                            );
+                            //   ],
+                            // );
                           }),
                           ElevatedButton(
                         style: ElevatedButton.styleFrom(

@@ -176,7 +176,7 @@ Future<void> getSPname()async{
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        container=myChildren(id: id,);
+                        container=myChildren(id: id,myname: name,);
                       });
                     },
                     style: TextButton.styleFrom(
@@ -287,7 +287,7 @@ Future<void> getSPname()async{
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        container=edit();
+                        container=edit(id: id,);
                       });
                     },
                     style: TextButton.styleFrom(
@@ -362,7 +362,13 @@ Future<void> getSPname()async{
         backgroundColor: primaryColor,
         automaticallyImplyLeading: false,
         actions: [
-         Builder(
+          IconButton(
+            icon: Icon(Icons.wechat),
+            onPressed: () {
+               Navigator.push(context, MaterialPageRoute(builder: (context){return chat2(id: id,name: name,);}));
+            },
+          ),
+          Builder(
           builder: (BuildContext context) {
            return IconButton(
               icon: Icon(Icons.list),
@@ -372,12 +378,6 @@ Future<void> getSPname()async{
             );
           }
          ),
-          IconButton(
-            icon: Icon(Icons.message),
-            onPressed: () {
-               Navigator.push(context, MaterialPageRoute(builder: (context){return chat2(id: id,);}));
-            },
-          ),
          ],
        ),
        body: container

@@ -28,7 +28,7 @@ class profileState extends State<profile> {
   bool pressed = false;
   String name = '';
   String phone = '';
-  String emailString = 'sarahhinno8@gmail.com';
+  String emailString = '';
   String idd = '';
   String startDate = " ";
   late DateTime sd;
@@ -84,6 +84,30 @@ class profileState extends State<profile> {
     }
   }
 
+  Future<void> updatee()async{
+    bool phone=false;
+    bool e=false;
+    final update= await http.put(Uri.parse('$ip/sanad/updatePhonesp'),body: {
+      'id':idd,
+      'phone':phoneController.text.trim()
+    });
+   
+    if(update.statusCode==200){
+      phone=true;
+    }
+    else{
+      print("error in phone update");
+    }
+    
+    if(phone ){
+      showDialog(context: context, builder: (context){
+        return AlertDialog(
+          title: Text("تــم الـــتــعـديــل",style: TextStyle(color: primaryColor,fontFamily: 'myFont',fontSize: 20,fontWeight: FontWeight.bold),),
+        );
+      });
+    }
+  }
+
   @override
   void initState() {
     super.initState();
@@ -114,16 +138,7 @@ class profileState extends State<profile> {
         height: size.height,
         child: SingleChildScrollView(
           scrollDirection: Axis.vertical,
-          child: FutureBuilder(
-              future: getspinfo(),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return CircularProgressIndicator(); // Show a loading indicator
-                } else if (snapshot.hasError) {
-                  return Text('Error: ${snapshot.error}');
-                } else {
-                  // Continue building your UI with the fetched data
-                  return Column(
+          child:  Column(
                     children: <Widget>[
                       SizedBox(
                         height: 20,
@@ -232,17 +247,8 @@ class profileState extends State<profile> {
                                     Expanded(
                                       child: TextField(
                                         controller: emailController,
-                                        enabled: _isTextFieldEnabled,
-                                        onTap: () {
-                                          if (!_isTextFieldEnabled) {
-                                            emailController.clear();
-                                          }
-                                        },
-                                        onChanged: (text) {
-                                          setState(() {
-                                            emailString = emailController.text;
-                                          });
-                                        },
+                                        enabled: false,
+                                        
                                         decoration: InputDecoration(
                                           labelText: emailString,
                                           labelStyle: TextStyle(
@@ -404,9 +410,8 @@ class profileState extends State<profile> {
 
                                               phoneController.text =
                                                   nameController.text;
-                                              emailController.text =
-                                                  nameController.text;
                                             });
+                                            updatee();
                                           },
                                           style: ElevatedButton.styleFrom(
                                             primary: Color(0xff6f35a5),
@@ -437,11 +442,10 @@ class profileState extends State<profile> {
                         child: Image.asset('assets/images/image1.png'),
                       )
                     ],
-                  );
-                }
-              }),
-        ),
+                  )
+
       ),
+      )
     );
   }
 }

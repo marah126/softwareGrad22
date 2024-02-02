@@ -64,17 +64,27 @@ class sessionNotesState extends State<sessionNotes>{
     if(attendence==true){
       final response = await http
           .post(Uri.parse(ip+"/sanad/addNotes"), body: {
-            'idd':childID,
+            'cid':childID,
             'specialest':id,
             'session':session,
             'date':date.toUtc().toIso8601String(),
             'personalNotes':personalNotes.text,
             'spNotes':spNotes.text,
-            'parentsNotes':parentNotes.text      
+            'parentsNotes':parentNotes.text,
+            'attendance':'yes'     
       });
     }else{
-      showAlert(context);
-      print("nnnnnnnnnnnnnooooooooooooooooooooonoonon");
+      final response = await http
+          .post(Uri.parse(ip+"/sanad/addNotes"), body: {
+            'cid':childID,
+            'specialest':id,
+            'session':session,
+            'date':date.toUtc().toIso8601String(),
+            'personalNotes':'',
+            'spNotes':'',
+            'parentsNotes':'',
+            'attendance':'no'     
+      });
     }
   }
 
@@ -96,19 +106,8 @@ class sessionNotesState extends State<sessionNotes>{
       backgroundColor: primaryLightColor,
       appBar: AppBar(
         backgroundColor: primaryColor,
-        automaticallyImplyLeading: false, // Disable the default back button
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.pushReplacement(
-            context,
-            MaterialPageRoute(
-              builder: (context) => spHomePage(id: id,name: name,),
-            ),
-            );
-
-          },
-        )
+        automaticallyImplyLeading: true, // Disable the default back button
+        
       ),
       body: 
          Container(
@@ -319,8 +318,22 @@ class sessionNotesState extends State<sessionNotes>{
                 ),
                 SizedBox(height: 10,),
                 RoundedButton(
-                  press: ()=>{
-                    addNewNote(context)
+                  press: (){
+                    addNewNote(context);
+                    showDialog(context: context, builder: (context){
+                      return AlertDialog(
+                        alignment: Alignment.center,
+                        title: Text("تــم الـــحــفـــظ",style: TextStyle(fontFamily:'myFont',fontSize: 20,fontWeight: FontWeight.bold),),
+                        // actions: [
+                        //   ElevatedButton(onPressed: (){
+                        //     Navigator.push(context, MaterialPageRoute(builder: (context) {
+                        //       return 
+                        //     },))
+                        //   }, child: child)
+                        // ],
+                      );
+
+                    });
                   },
                   //() {
                   //   if(selectedOption=='No'){

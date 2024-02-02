@@ -1,4 +1,4 @@
-// ignore_for_file: prefer_const_constructors, prefer_interpolation_to_compose_strings
+// ignore_for_file: prefer_const_constructors
 
 import 'dart:convert';
 
@@ -13,19 +13,18 @@ import 'package:sanad_software_project/theme.dart';
 
 
 
-class chat2 extends StatefulWidget {
+class chatParent extends StatefulWidget {
   final String id;
-  final String name;
 
-  const chat2({super.key, required this.id, required this.name});
+  const chatParent({super.key, required this.id});
   @override
   _chatState createState() => _chatState();
 }
 
-class _chatState extends State<chat2> {
-
+class _chatState extends State<chatParent> {
+  
   late String name;
-  late final List<dynamic> data;
+   late final List<dynamic> data;
   List<String> imagePath = [];
   List<String> imageID = [];
   List<String> EMP = [];
@@ -48,11 +47,25 @@ class _chatState extends State<chat2> {
       print(e);
     }
   }
+  Future<void> getSPname()async{
+  final spName = await http.get(Uri.parse("$ip/sanad/getsppnename?id=${widget.id}"));
+  if(spName.statusCode==200){
+    print("body "+spName.body.toString());
+    final spNameBody=jsonDecode(spName.body);
+      name=spNameBody['Fname']+" "+spNameBody['Lname'];
+    
+    print("name"+name);
+  }
+  else{
+    print("error"+spName.body);
+  }
+}
+
 
    Future<void> getEmployeeName() async {
     // print("childrenssssssssssss");
     final EmployeeNamesResponse =
-        await http.get(Uri.parse(ip + "/sanad/getchnameSP?sp=$name"));
+        await http.get(Uri.parse(ip + "/sanad/getSpecialists?cid=${widget.id}"));
     if (EmployeeNamesResponse.statusCode == 200) {
       EMP.clear();
       String EmployeeName;
@@ -92,19 +105,6 @@ class _chatState extends State<chat2> {
     }
   }
 
-  Future<void> getSPname()async{
-  final spName = await http.get(Uri.parse("$ip/sanad/getsppnename?id=${widget.id}"));
-  if(spName.statusCode==200){
-    print("body "+spName.body.toString());
-    final spNameBody=jsonDecode(spName.body);
-      name=spNameBody['Fname']+" "+spNameBody['Lname'];
-    
-    print("name"+name);
-  }
-  else{
-    print("error"+spName.body);
-  }
-}
 
   
 
@@ -115,14 +115,15 @@ class _chatState extends State<chat2> {
       'message': ' اوك',
       'image': 'assets/images/person1.png'
     },
+    
   ];
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
-    name=widget.name;
     getUser();
+    getSPname();
     getEmployeeName();
     getSPImages();
   }
@@ -141,67 +142,7 @@ class _chatState extends State<chat2> {
         child: Column(
           children: <Widget>[
            SizedBox(height: 20),
-           GestureDetector(
-                  onTap: () async{
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => ChatScreen2(receiverID: "admin",receiverName: "الإدارة",myId: widget.id,)
-                      ),
-                    );
-                  },
-                child: Column(
-                  children: <Widget>[
-                    Card(
-                      color: Color.fromARGB(255, 237, 234, 240),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
-                        children: <Widget>[
-                          
-                          Spacer(),                           
-                             Column(
-                              children: <Widget>[
-                                Text(
-                                  'الإدارة',
-                                  style: TextStyle(
-                                      fontFamily: 'myfont',
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w200),
-                                ),
-                                SizedBox(height: 5),
-                            //     Text(
-                            // Freinds[index]['message'] ?? '',
-                            //       style: TextStyle(
-                            //           fontSize: 15, fontFamily: 'myfont'),
-                            //     ),
-                              ],
-                            ),
-                            SizedBox(width: 30,),
-                            ClipOval(
-                              // child: imageID.contains("")
-                              //     ? Image.network(
-                              //         // 'http://192.168.1.19:3000/sanad/getSPImage?id=${imageID[imageID.indexOf(data[index]['id'])]}',
-                              //         width: 60,
-                              //         height: 60,
-                              //         fit: BoxFit.cover,
-                              //       )
-                                  // : 
-                                 child: Image.asset(
-                                      'assets/images/profileImage.jpg',
-                                      width: 70,
-                                      height: 60,
-                                      fit: BoxFit.cover,
-                                    ),
-                            ),
-                          SizedBox(width: 5,),
-                        ],
-                      ),
-                    ),
-                    
-                  ],
-
-                ),
-                  ),
+           
             ListView.builder(
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(),

@@ -31,7 +31,7 @@ class profileChildState extends State<profileChild> {
   String name = '';
   String fatherphone = '';
   String motherphone='';
-  String emailString = 'sarahhinno8@gmail.com';
+  String emailString = '';
   String idd = '';
   String startDate = " ";
   String birthDate = '';

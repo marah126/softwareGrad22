@@ -32,6 +32,8 @@ class _spEvaluationState extends State<spEvaluation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
         backgroundColor: primaryColor,
         title: Text('تـقـيـيـم الأخـصـائـيـن',style: TextStyle(fontFamily: 'myfont',fontWeight: FontWeight.bold),),
       ),
@@ -64,6 +66,7 @@ class _spEvaluationState extends State<spEvaluation> {
                           color: primaryColor,
                           fontSize: 17.0,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'myFont'
                         ),
                         dropdownColor: Colors.grey[200],
                         elevation: 2,
@@ -103,7 +106,7 @@ class _spEvaluationState extends State<spEvaluation> {
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true,
-                      itemSize: 20,
+                      itemSize: 35,
                       itemCount: 5,
                       itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                       itemBuilder: (context, _) => Icon(
@@ -138,7 +141,7 @@ class _spEvaluationState extends State<spEvaluation> {
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true,
-                      itemSize: 20,
+                      itemSize: 35,
                       itemCount: 5,
                       itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                       itemBuilder: (context, _) => Icon(
@@ -173,7 +176,7 @@ class _spEvaluationState extends State<spEvaluation> {
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true,
-                      itemSize: 20,
+                      itemSize: 35,
                       itemCount: 5,
                       itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                       itemBuilder: (context, _) => Icon(
@@ -208,7 +211,7 @@ class _spEvaluationState extends State<spEvaluation> {
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true,
-                      itemSize: 20,
+                      itemSize: 35,
                       itemCount: 5,
                       itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                       itemBuilder: (context, _) => Icon(
@@ -243,7 +246,7 @@ class _spEvaluationState extends State<spEvaluation> {
                       minRating: 1,
                       direction: Axis.horizontal,
                       allowHalfRating: true,
-                      itemSize: 20,
+                      itemSize: 35,
                       itemCount: 5,
                       itemPadding: EdgeInsets.symmetric(horizontal: 2.0),
                       itemBuilder: (context, _) => Icon(

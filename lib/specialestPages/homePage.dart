@@ -178,8 +178,8 @@ class spHomePageState extends State<spHomePage>{
                                 GestureDetector(
                                   onTap: () {
                                     Navigator.push(
-                                      context, MaterialPageRoute(builder: (context){
-                                        return sessionNotes(id: widget.id,name: data[index]['child'],session: data[index]['session'],date: DateTime.parse(data[index]['date']).toLocal(),index: index,);}));},
+                                      context, MaterialPageRoute(builder: (context)=>
+                                         sessionNotes(id: widget.id,name: data[index]['child'],session: data[index]['session'],date: DateTime.parse(data[index]['date']).toLocal(),index: index,)));},
                                   child: Text("تــوثــيــق",style: TextStyle(
                                     fontFamily: 'myFont',
                                     fontSize: 16.0,

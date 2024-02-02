@@ -156,8 +156,9 @@ class childSchduleState extends State<childSchdule> {
               "  --  " +
               event.session,
           color: event.color,
-          recurrenceRule:
-              'FREQ=DAILY;INTERVAL=7;UNTIL=$lastDayOfCurrentMonth'));
+          //  recurrenceRule:
+              //  'FREQ=DAILY;INTERVAL=7;UNTIL=$lastDayOfCurrentMonth'
+               ));
     }
     return _DataSource(appointments);
   }

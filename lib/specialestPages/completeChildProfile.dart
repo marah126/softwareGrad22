@@ -1,9 +1,14 @@
+// ignore_for_file: prefer_const_literals_to_create_immutables, prefer_const_constructors
+
 import 'dart:io';
 import 'dart:typed_data';
-
+import 'package:http/http.dart' as http;
+import 'package:http_parser/http_parser.dart';
+import 'package:path/path.dart' as path;
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:file_picker/file_picker.dart';
+import 'package:sanad_software_project/theme.dart';
 
 // void main() {
 //   runApp(MyApp());
@@ -17,22 +22,148 @@ import 'package:file_picker/file_picker.dart';
 // }
 
 class edit extends StatefulWidget {
+  final String id;
+
+  const edit({super.key, required this.id});
   @override
   _TestPageState createState() => _TestPageState();
 }
 
 class _TestPageState extends State<edit> {
-  Uint8List? _imageBytes;
+  File? _image;
+  File? _image2;
+
   bool isExpanded = false;
 
   FilePickerResult? result;
   String selectedFileName = '';
-  final String defaultImage = 'assets/default_image.png';
+
+  Future<void> _getImage(int x) async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if(x==1){
+      if (pickedFile != null) {
+      setState(() {
+        _image = File(pickedFile.path);
+        print(pickedFile.path);
+      });
+    }
+    }
+    else if(x==2){
+      if (pickedFile != null) {
+      setState(() {
+        _image2 = File(pickedFile.path);
+        print(pickedFile.path);
+      });
+    }
+    }
+  }
+
+  File? _file;
+
+  Future<void> _getFile() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+
+    setState(() {
+      if (result != null) {
+        _file = File(result.files.single.path!);
+      }
+    });
+  }
+
+
+
+  Future<void>personalImage()async{
+     if (_image == null) {
+      print('No image selected');
+      return;
+    }
+    final url = Uri.parse(ip+'/sanad/uploadSP'); // Replace with your server's IP
+    var request = http.MultipartRequest('POST', url);
+    request.fields['spID'] = widget.id;
+    request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+    
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully');
+      }else if(response.statusCode==201){
+        print(response.stream);
+      }
+       else {
+        print('Failed to upload image. Status code: ${response.statusCode}');
+      
+      }
+    }
+    catch(error){
+      print("error");
+    }    
+  }
+
+
+  Future<void>idImage()async{
+     if (_image == null) {
+      print('No image selected');
+      return;
+    }
+    final url = Uri.parse(ip+'/sanad/uploadJobimageSP'); // Replace with your server's IP
+    var request = http.MultipartRequest('POST', url);
+    request.fields['spID'] = widget.id;
+    request.files.add(await http.MultipartFile.fromPath('image', _image!.path));
+    
+    try {
+      var response = await request.send();
+      if (response.statusCode == 200) {
+        print('Image uploaded successfully');
+      }else if(response.statusCode==201){
+        print(response.stream);
+      }
+       else {
+        print('Failed to upload image. Status code: ${response.statusCode}');
+      
+      }
+    }
+    catch(error){
+      print("error");
+    }    
+  }
+
+  Future<void> _uploadFile() async {
+
+    if (_file == null) {
+      // Handle case where no file is selected
+      return;
+    }
+    var request = http.MultipartRequest(
+      'POST',
+      Uri.parse(ip + '/sanad/uploadfileSP'),
+    );
+    // Add file to the request
+    request.fields['spID'] = widget.id;
+    request.files.add(
+      await http.MultipartFile.fromPath(
+        'file',
+        _file!.path,
+        contentType: MediaType('application', 'pdf'),
+      ),
+    );
+    // Send the request
+    var response = await request.send();
+    // Check the server response
+    if (response.statusCode == 200) {
+      print('File uploaded successfully');
+    } else {
+      print('File upload failed with status ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
+        centerTitle: true,
         backgroundColor: Color(0xff6f35a5),
         title: Text(
           'إكـمـال الـصـفـحـة الـشـخـصـيـة',
@@ -53,18 +184,11 @@ class _TestPageState extends State<edit> {
                       borderRadius: BorderRadius.circular(10),
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: getImage,
-                        child: _imageBytes == null
-                            ? Image.asset(
-                                'assets/images/profileImage.jpg',
-                                width: 200,
-                                height: 200,
-                              )
-                            : Image.memory(
-                                _imageBytes!,
-                                width: 200,
-                                height: 200,
-                              ),
+                        onTap: (){
+                          _getImage(1);
+                        },
+                        child: ClipOval(child: _image==null?Image.asset("assets/images/profileImage.jpg"):
+                        Image.file(_image!,height: 120,width: 120,fit: BoxFit.cover,))
                       ),
                     ),
                   ),
@@ -78,7 +202,7 @@ class _TestPageState extends State<edit> {
                           style: TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'myfamily',
+                            fontFamily: 'myFont',
                           ),
                         ),
                         SizedBox(height: 20),
@@ -111,28 +235,12 @@ class _TestPageState extends State<edit> {
                           borderRadius: BorderRadius.circular(29),
                         ),
                       ),
-                      onPressed: () async {
-                        result = await FilePicker.platform.pickFiles(
-                          type: FileType.image,
-                          //  allowedExtensions: ['jpg', 'jpeg', 'png'],
-                        );
-                        if (result == null) {
-                          print("No file selected");
-                        } else {
-                          setState(() {
-                            selectedFileName = 'تــــم';
-                          });
-
-                          result?.files.forEach((element) {
-                            print(element.name);
-                          });
-                        }
+                      onPressed: ()  {
+                        _getImage(2);
                       },
                       child: Text(
-                        selectedFileName.isNotEmpty
-                            ? selectedFileName
-                            : 'إرفـاق',
-                      ),
+                        'إرفـاق',style: TextStyle(fontFamily: 'myFont'),
+                      )
                     ),
                     //  SizedBox(width: 50),
                     Spacer(),
@@ -149,7 +257,10 @@ class _TestPageState extends State<edit> {
                   ],
                 ),
               ),
-                SizedBox(height: 40),
+              SizedBox(height: 5,),
+              _image2==null?
+                SizedBox(height: 40):Image.file(_image2!,height: 70,),
+                SizedBox(height: 5,),
               Container(
                 height: 50,
                 width: 310,
@@ -172,24 +283,10 @@ class _TestPageState extends State<edit> {
                         ),
                       ),
                       onPressed: () async {
-                        result = await FilePicker.platform
-                            .pickFiles(allowMultiple: true);
-                        if (result == null) {
-                          print("No file selected");
-                        } else {
-                          setState(() {
-                            selectedFileName = 'تــــم';
-                          });
-
-                          result?.files.forEach((element) {
-                            print(element.name);
-                          });
-                        }
+                        _getFile();
                       },
                       child: Text(
-                        selectedFileName.isNotEmpty
-                            ? selectedFileName
-                            : 'إرفـاق',
+                        'إرفـاق',style:TextStyle(fontFamily: 'myFont') ,
                       ),
                     ),
                     SizedBox(width: 80),
@@ -198,12 +295,17 @@ class _TestPageState extends State<edit> {
                       style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'myFont'
                       ),
                     ),
                   ],
                 ),
               ),
+              SizedBox(height: 5,),
+               _file != null
+                ? Text('Selected File: ${path.basename(_file!.path)}'):
                   SizedBox(height: 80),
+                  SizedBox(height: 10,),
                   ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xff6f35a5),
@@ -214,6 +316,9 @@ class _TestPageState extends State<edit> {
                       ), 
                     ),
                     onPressed: () {
+                      personalImage();
+                      idImage();
+                      _uploadFile();
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
@@ -266,14 +371,5 @@ class _TestPageState extends State<edit> {
     );
   }
 
-  Future getImage() async {
-    final pickedFile =
-        await ImagePicker().pickImage(source: ImageSource.gallery);
-
-    setState(() {
-      if (pickedFile != null) {
-        _imageBytes = File(pickedFile.path).readAsBytesSync();
-      }
-    });
-  }
+  
 }

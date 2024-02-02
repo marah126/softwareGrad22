@@ -13,7 +13,9 @@ import 'package:sanad_software_project/adminPages/showAllChildren.dart';
 import 'package:sanad_software_project/adminPages/showAllEmployee.dart';
 import 'package:sanad_software_project/parents.dart/allSessions.dart';
 import 'package:sanad_software_project/parents.dart/homePageParent.dart';
+import 'package:sanad_software_project/parents.dart/parentsChat.dart';
 import 'package:sanad_software_project/parents.dart/personalPage.dart';
+import 'package:sanad_software_project/parents.dart/posts.dart';
 import 'package:sanad_software_project/parents.dart/specialistEvaluation.dart';
 import 'package:sanad_software_project/specialestPages/empPersonalInformation.dart';
 import 'package:sanad_software_project/specialestPages/empVications.dart';
@@ -184,7 +186,7 @@ Future<void> getSPname()async{
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        container=myChildren(id: id,);
+                        // container=myChildren(id: id,);
                       });
                     },
                     style: TextButton.styleFrom(
@@ -271,7 +273,7 @@ Future<void> getSPname()async{
                       mainAxisAlignment: MainAxisAlignment.end,
                       children: [
                         Text(
-                          "الـحسـاب",
+                          "الـقـيـيــم",
                           style: TextStyle(
                             color: primaryColor,
                             fontFamily: 'myFont',
@@ -280,7 +282,7 @@ Future<void> getSPname()async{
                         ),SizedBox(
                             width: 8),
                         Icon(
-                          Icons.monetization_on, // Replace with the desired icon
+                          Icons.rate_review, // Replace with the desired icon
                           color: primaryColor, // Set the color of the icon
                         ),
                         SizedBox(width: 30,),
@@ -289,7 +291,42 @@ Future<void> getSPname()async{
                   ),
                 ),
                 SizedBox(height: 5,),
-                
+                Container(
+                width: size.width,
+                height: size.width * 0.2,
+                  child: TextButton(
+                    onPressed: () {
+                      setState(() {
+                        container=viewPostsParernt();
+                      });
+                    },
+                    style: TextButton.styleFrom(
+                      foregroundColor: primaryColor,
+                        padding: EdgeInsets.all(10),
+                        backgroundColor: hoveredColor,
+                        elevation: 3,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        Text(
+                          "الـمـنـشــورات",
+                          style: TextStyle(
+                            color: primaryColor,
+                            fontFamily: 'myFont',
+                            fontSize: 20,
+                          ),
+                        ),SizedBox(
+                            width: 8),
+                        Icon(
+                          Icons.article, // Replace with the desired icon
+                          color: primaryColor, // Set the color of the icon
+                        ),
+                        SizedBox(width: 30,),
+                      ],
+                    ),
+                  ),
+                ),
             ]),
           ),
         ),
@@ -302,7 +339,7 @@ Future<void> getSPname()async{
           IconButton(
             icon: Icon(Icons.wechat),
             onPressed: () {
-              // Navigator.push(context, MaterialPageRoute(builder: (context){return ChatScreen();}));
+               Navigator.push(context, MaterialPageRoute(builder: (context){return chatParent(id: id,);}));
             },
           ),
           Builder(

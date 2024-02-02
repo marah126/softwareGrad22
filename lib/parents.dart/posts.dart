@@ -13,12 +13,12 @@ import 'package:sanad_software_project/theme.dart';
 import 'package:http/http.dart' as http;
 
 
-class viewPosts extends StatefulWidget {
+class viewPostsParernt extends StatefulWidget {
   @override
   _viewPostsState createState() => _viewPostsState();
 }
 
-class _viewPostsState extends State<viewPosts> {
+class _viewPostsState extends State<viewPostsParernt> {
   bool isExpanded = false;
   int lines = 3;
   int s = 5;
@@ -62,7 +62,7 @@ class _viewPostsState extends State<viewPosts> {
 
 
 
-  void getPosts()async{
+ void getPosts()async{
     dynamicposts=[];
     final allPosts=await http.get(Uri.parse("$ip/sanad/getPosts"));
     if(allPosts.statusCode==200){
@@ -77,8 +77,17 @@ class _viewPostsState extends State<viewPosts> {
         'image': 'assets/images/posts.jpg',
       };
       dynamicposts.add(newPost);
-      String s="$ip/sanad/getImagePost?filename=${data[length-i]['imageName']}";
-      images.add(s);
+      String s=data[length-i]['imageName'];
+      if(s.trim()==""){
+        print("empty index $i");
+        images.add("");
+      }
+      else{
+        s="$ip/sanad/getImagePost?filename=${data[length-i]['imageName']}";
+        images.add(s);
+      }
+      
+      
       }
     }
   }
@@ -220,12 +229,13 @@ class _viewPostsState extends State<viewPosts> {
                               ],
                             ),
                             Center(
-                              child: Image.network(
+                              child: images[i]==""?Text(""):
+                              Image.network(
                                 images[i] ?? '',
                                 width: 350,
                                 height: 300,
                               ),
-                            ),
+                            ), 
                           ],
                         ),
                       ),

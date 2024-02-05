@@ -18,9 +18,7 @@ class _spEvaluationState extends State<spEvaluation> {
   String svaluee = 'ساره خالد وليد حنو';
   List<String> SP = [
     'ساره خالد وليد حنو',
-    'وليد خالج وليد حنو',
-    'لميس خالد وليد حنو',
-    'مجد خالج وليد حنو',
+    'ليلى حسن سعيد دويكات',
   ];
   double _rating1 = 0;
   double _rating2 = 0;
@@ -267,7 +265,14 @@ class _spEvaluationState extends State<spEvaluation> {
                 color: primaryColor,
                 text: "تـخـزيـن ",
                 textColor: Colors.white,
-                press: () {},
+                press: () {
+                  showDialog(context: context, builder: (context){
+                    return AlertDialog(
+                      title: Text("تـــم الــتــخــزيــن",style: TextStyle(fontFamily: 'myFont',fontSize: 20,fontWeight: FontWeight.bold),),
+                      alignment: Alignment.center,
+                    );
+                  });
+                },
               ),
             ],
           )),

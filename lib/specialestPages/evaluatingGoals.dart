@@ -20,10 +20,10 @@ class _evalobjecState extends State<evalobjec> {
   bool isChecked = false;
   String itemm = myItems.first;
   static List<String> myItems = [
-    'التركيز والانتباه ',
-    'المهارات الإدراكية ',
-    'التواصل البصري ',
-    'المشاكل الصحية '
+    'التركيز والانتباه',
+    'المهارات الإدراكية',
+    'التواصل البصري',
+    'المشاكل الصحية'
   ];
 
   List<String> goalsList = [];
@@ -136,7 +136,7 @@ class _evalobjecState extends State<evalobjec> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "محمد دريني",
+                        "مها دريني",
                         style: TextStyle(
                             fontFamily: 'myFont',
                             fontSize: 20,

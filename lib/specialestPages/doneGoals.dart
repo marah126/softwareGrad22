@@ -21,10 +21,10 @@ class _doneGoalsState extends State<doneGoals> {
   bool isChecked = false;
   String itemm = myItems.first;
   static List<String> myItems = [
-    'التركيز والانتباه ',
-    'المهارات الإدراكية ',
-    'التواصل البصري ',
-    'المشاكل الصحية '
+    'التركيز والانتباه',
+    'المهارات الإدراكية',
+    'التواصل البصري',
+    'المشاكل الصحية'
   ];
 
   List<String> goalsList = [];
@@ -115,7 +115,7 @@ class _doneGoalsState extends State<doneGoals> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "محمد دريني",
+                        "مها دريني",
                         style: TextStyle(
                             fontFamily: 'myFont',
                             fontSize: 20,

@@ -21,10 +21,10 @@ class _objectivesState extends State<objectives> {
   bool isChecked = false;
   String itemm = myItems.first;
   static List<String> myItems = [
-    'التركيز والانتباه ',
-    'المهارات الإدراكية ',
-    'التواصل البصري ',
-    'المشاكل الصحية '
+    'التركيز والانتباه',
+    'المهارات الإدراكية',
+    'التواصل البصري',
+    'المشاكل الصحية'
   ];
 
   List<String> goalsList = [];
@@ -47,6 +47,7 @@ class _objectivesState extends State<objectives> {
     try {
       final goalsResponse = await http.get(Uri.parse(
           "$ip/sanad/getObjects?childID=$childID&spID=$spID&type=وظيفي&subType=$subType"));
+          print(subType);
       if (goalsResponse.statusCode == 200) {
         List<dynamic> data = jsonDecode(goalsResponse.body);
         for (int i = 0; i < data.length; i++) {
@@ -115,7 +116,7 @@ class _objectivesState extends State<objectives> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "محمد دريني",
+                        "مها دريني",
                         style: TextStyle(
                             fontFamily: 'myFont',
                             fontSize: 20,

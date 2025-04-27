@@ -16,8 +16,9 @@ class doneGoals extends StatefulWidget {
 }
 
 class _doneGoalsState extends State<doneGoals> {
-  String childID = '123456789';
-  String spID = '987654321';
+   String childID ='';
+   String spID ='';
+   String name='';
   bool isChecked = false;
   String itemm = myItems.first;
   static List<String> myItems = [
@@ -37,6 +38,24 @@ class _doneGoalsState extends State<doneGoals> {
     Color.fromARGB(255, 221, 237, 218)
   ];
 
+
+  Future<void> getSPname()async{
+    print("4444 $childID");
+  final spName = await http.get(Uri.parse("$ip/sanad/getChildname?id=$childID"));
+  if(spName.statusCode==200){
+    print("body "+spName.body.toString());
+    final spNameBody=jsonDecode(spName.body);
+    setState(() {
+      name=spNameBody['Fname']+" "+spNameBody['Lname'];
+    });
+    
+    print("name"+name);
+  }
+  else{
+    print("error"+spName.body);
+  }
+}
+
   Future<void> getGoals(String subType) async {
     setState(() {
       goalsList.clear();
@@ -46,7 +65,7 @@ class _doneGoalsState extends State<doneGoals> {
 
     try {
       final goalsResponse = await http.get(Uri.parse(
-          "$ip/sanad/getDoneObj?childID=$childID&spID=$spID&type=وظيفي&subType=$subType"));
+          "$ip/sanad/getDoneObj?childID=$childID&spID=$spID&type=وظيفي&subType=${subType.trim()}"));
       if (goalsResponse.statusCode == 200) {
         List<dynamic> data = jsonDecode(goalsResponse.body);
         for (int i = 0; i < data.length; i++) {
@@ -68,6 +87,11 @@ class _doneGoalsState extends State<doneGoals> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    setState(() {
+      childID=widget.childId;
+      spID=widget.spId;
+    });
+    getSPname();
     getGoals(myItems.first);
   }
 
@@ -81,7 +105,7 @@ class _doneGoalsState extends State<doneGoals> {
         backgroundColor: primaryColor,
         centerTitle: true,
         title: Text(
-          " الأهـداف الـحـالـيـة",
+          " الأهـداف الـمــنـجــزة",
           style: TextStyle(
               color: Colors.white,
               fontFamily: 'myFont',
@@ -115,7 +139,7 @@ class _doneGoalsState extends State<doneGoals> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "مها دريني",
+                        name,
                         style: TextStyle(
                             fontFamily: 'myFont',
                             fontSize: 20,

@@ -10,13 +10,18 @@ import 'package:sanad_software_project/theme.dart';
 import 'package:http/http.dart' as http;
 
 class evalobjec extends StatefulWidget {
+  final String childId;
+  final String spId;
+
+  const evalobjec({super.key, required this.childId, required this.spId});
   @override
   _evalobjecState createState() => _evalobjecState();
 }
 
 class _evalobjecState extends State<evalobjec> {
-  String childID = '123456789';
-  String spID = '987654321';
+  String childID = '';
+  String spID = '';
+  String name='';
   bool isChecked = false;
   String itemm = myItems.first;
   static List<String> myItems = [
@@ -41,7 +46,7 @@ class _evalobjecState extends State<evalobjec> {
 
     try {
       final goalsResponse = await http.get(Uri.parse(
-          "$ip/sanad/getObjects?childID=$childID&spID=$spID&type=وظيفي&subType=$subType"));
+          "$ip/sanad/getObjects?childID=$childID&spID=$spID&type=وظيفي&subType=${subType.trim()}"));
       if (goalsResponse.statusCode == 200) {
         List<dynamic> data = jsonDecode(goalsResponse.body);
         for (int i = 0; i < data.length; i++) {
@@ -71,7 +76,7 @@ class _evalobjecState extends State<evalobjec> {
             'childID': childID,
             'spID': spID,
             'type': "وظيفي",
-            'subType': itemm,
+            'subType': itemm.trim(),
             'object': goalsList[i].trim(),
             'percent': percentList[i].trim(),
           });
@@ -87,10 +92,32 @@ class _evalobjecState extends State<evalobjec> {
     }
   }
 
+  Future<void> getSPname()async{
+    print("4444 $childID");
+  final spName = await http.get(Uri.parse("$ip/sanad/getChildname?id=$childID"));
+  if(spName.statusCode==200){
+    print("body "+spName.body.toString());
+    final spNameBody=jsonDecode(spName.body);
+    setState(() {
+      name=spNameBody['Fname']+" "+spNameBody['Lname'];
+    });
+    
+    print("name"+name);
+  }
+  else{
+    print("error"+spName.body);
+  }
+}
+
   @override
   void initState() {
     super.initState();
-    getGoals("التركيز والانتباه ");
+    setState(() {
+      childID=widget.childId;
+      spID=widget.spId;
+    });
+    getSPname();
+    getGoals("التركيز والانتباه");
     print(goalsList.length);
   }
 
@@ -136,7 +163,7 @@ class _evalobjecState extends State<evalobjec> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "مها دريني",
+                        name,
                         style: TextStyle(
                             fontFamily: 'myFont',
                             fontSize: 20,

@@ -16,8 +16,9 @@ class objectives extends StatefulWidget {
 }
 
 class _objectivesState extends State<objectives> {
-  String childID = '123456789';
-  String spID = '987654321';
+  String childID = '';
+  String spID = '';
+  String name='';
   bool isChecked = false;
   String itemm = myItems.first;
   static List<String> myItems = [
@@ -46,7 +47,7 @@ class _objectivesState extends State<objectives> {
 
     try {
       final goalsResponse = await http.get(Uri.parse(
-          "$ip/sanad/getObjects?childID=$childID&spID=$spID&type=وظيفي&subType=$subType"));
+          "$ip/sanad/getObjects?childID=$childID&spID=$spID&type=وظيفي&subType=${subType.trim()}"));
           print(subType);
       if (goalsResponse.statusCode == 200) {
         List<dynamic> data = jsonDecode(goalsResponse.body);
@@ -65,10 +66,32 @@ class _objectivesState extends State<objectives> {
     }
   }
 
+  Future<void> getSPname()async{
+    print("4444 $childID");
+  final spName = await http.get(Uri.parse("$ip/sanad/getChildname?id=$childID"));
+  if(spName.statusCode==200){
+    print("body "+spName.body.toString());
+    final spNameBody=jsonDecode(spName.body);
+    setState(() {
+      name=spNameBody['Fname']+" "+spNameBody['Lname'];
+    });
+    
+    print("name"+name);
+  }
+  else{
+    print("error"+spName.body);
+  }
+}
+
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    setState(() {
+      childID=widget.childId;
+      spID=widget.spId;
+    });
+    getSPname();
     getGoals(myItems.first);
   }
 
@@ -116,7 +139,7 @@ class _objectivesState extends State<objectives> {
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "مها دريني",
+                        name,
                         style: TextStyle(
                             fontFamily: 'myFont',
                             fontSize: 20,

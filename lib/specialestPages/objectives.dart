@@ -54,7 +54,7 @@ class _goalsState extends State<goals> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => objectives(spId: "",childId: "",),
+                          builder: (context) => objectives(spId: widget.spId,childId: widget.childId,),
                         ),
                       );
                     },
@@ -67,7 +67,7 @@ class _goalsState extends State<goals> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => doneGoals(spId: "",childId: "",),
+                          builder: (context) => doneGoals(spId: widget.spId,childId: widget.childId,),
                         ),
                       );
                     },
@@ -80,7 +80,7 @@ class _goalsState extends State<goals> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => evalobjec(),
+                          builder: (context) => evalobjec(spId: widget.spId,childId: widget.childId,),
                         ),
                       );
                     },
@@ -93,7 +93,7 @@ class _goalsState extends State<goals> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => newGoals(childId: "",spId: "",),
+                          builder: (context) => newGoals(childId: widget.spId,spId: widget.childId,),
                         ),
                       );
                     },

@@ -330,7 +330,7 @@ class childDetailesState extends State<childDetailes>{
                         onPressed: () async {
                           print("inside func");
                           Navigator.push(context, MaterialPageRoute(builder: (context) {
-                            return goals(childId: "123456789", spId: "987654321");
+                            return goals(childId: widget.id, spId: widget.myid);
                           },));
                           
                         },

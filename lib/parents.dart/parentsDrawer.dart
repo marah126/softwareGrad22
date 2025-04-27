@@ -149,7 +149,7 @@ Future<void> getSPname()async{
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        container=childSchdule(id: "");
+                        container=childSchdule(id: id);
                       });
                     },
                     style: TextButton.styleFrom(
@@ -186,7 +186,7 @@ Future<void> getSPname()async{
                   child: TextButton(
                     onPressed: () {
                       setState(() {
-                        // container=myChildren(id: id,);
+                         container=notesChild(id:id);
                       });
                     },
                     style: TextButton.styleFrom(

@@ -1,5 +1,7 @@
 // ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables
 
+import 'dart:convert';
+
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/material.dart';
 import 'package:sanad_software_project/components/roundedTextFeild2.dart';
@@ -17,8 +19,9 @@ class newGoals extends StatefulWidget {
 }
 
 class _newGoalsState extends State<newGoals> {
-  String childId = "123456789";
-  String spId = "987654321";
+  String childID = "";
+  String spId = "";
+  String name='';
   List<String> selectedValues = [];
   static List<String> myItems = [
     'التركيز والانتباه ',
@@ -75,7 +78,7 @@ class _newGoalsState extends State<newGoals> {
       }
       
         final newOB = await http.post(Uri.parse("$ip/sanad/newObject"), body: {
-          'childID': childId,
+          'childID': childID,
           'spID': spId,
           'type': "وظيفي",
           'subType': selected.trim(),
@@ -92,11 +95,32 @@ class _newGoalsState extends State<newGoals> {
       print("error $error");
     }
   }
+  Future<void> getSPname()async{
+    print("4444 $childID");
+  final spName = await http.get(Uri.parse("$ip/sanad/getChildname?id=$childID"));
+  if(spName.statusCode==200){
+    print("body "+spName.body.toString());
+    final spNameBody=jsonDecode(spName.body);
+    setState(() {
+      name=spNameBody['Fname']+" "+spNameBody['Lname'];
+    });
+    
+    print("name"+name);
+  }
+  else{
+    print("error"+spName.body);
+  }
+}
 
   @override
   void initState() {
     // TODO: implement initState
     super.initState();
+    setState(() {
+      childID=widget.childId;
+      spId=widget.spId;
+    });
+    getSPname();
     TextEditingController newController = TextEditingController();
     TextEditingController percentController = TextEditingController();
     String selected = myItems.first;
